@@ -31,7 +31,7 @@ Une notice d'utilisation sera donnée à l'appel de chaque programme.
 
 Exemple :
 
-  > sponge-bob-universe 
+  > sponge-bob-universe
 
     ///////////////////////SPONGE-BOB-UNIVERSE///////////////////////
 
