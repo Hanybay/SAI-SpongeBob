@@ -23,7 +23,7 @@ INC = -I$(HED_DIR)
 
 # # Exécutables
 
-EXEC = sponge-bob-universe-test
+EXEC = spongeBob-universe-test
 
 
 # Fonctions
