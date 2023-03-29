@@ -1,3 +1,10 @@
+/* 
+* Module : transformations
+* Type : fichier source
+* Auteur : Mourtaza AKIL
+* Date de création : 29/03/2023
+*/
+
 #include <stdio.h>
 #include <math.h>
 #include "GL/glu.h"
@@ -126,3 +133,5 @@ void print_matrix(GLfloat *matrix, int size, int nb_lines) {
             printf("\n");
     }
 }
+  
+

@@ -2,26 +2,26 @@
 
 MAKE = make
 
-# # Compilateur
+## Compilateur
 
 CC = gcc
 OPTIONS1 = -Wall
 OPTIONS2 = -W -g -std=c89 -pedantic -O3
 FLAGS = -lglut -lGLU -lGL -lm
 
-# # Répertoires
+## Répertoires
 
-SRC_DIR = .
-HED_DIR = .
-OBJ_DIR = ./objects
+SRC_DIR = ./src
+HED_DIR = ./inc
+OBJ_DIR = ./obj
 
-# # Dépendandes
+## Dépendances
 
 SRC = $(shell find $(SRC_DIR) -name "*.c")
 OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.c=.o)))
 INC = -I$(HED_DIR)
 
-# # Exécutables
+## Exécutables
 
 EXEC = spongeBob-universe-test
 

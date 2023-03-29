@@ -1,5 +1,12 @@
-#ifndef TRANSFORMATIONS_H
-#define TRANSFORMATIONS_H
+/* 
+* Module : transformations
+* Type : fichier en-tête
+* Auteur : Mourtaza AKIL
+* Date de création : 29/03/2023
+*/
+
+#ifndef _TRANSFORMATIONS_H_
+#define _TRANSFORMATIONS_H_
 
 #include "GL/gl.h"
 
