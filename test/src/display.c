@@ -1,3 +1,10 @@
+/* 
+* Module : display
+* Type : fichier source
+* Auteur : Mourtaza AKIL
+* Date de création : 30/03/2023
+*/
+
 #include "GL/gl.h"
 #include "GL/glut.h"
 #include <stdio.h>
@@ -28,3 +35,5 @@ void display() {
 
     glutSwapBuffers();
 }
+
+

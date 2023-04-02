@@ -1,3 +1,10 @@
+/* 
+* Module : display
+* Type : fichier en-tête
+* Auteur : Mourtaza AKIL
+* Date de création : 30/03/2023
+*/
+
 #ifndef _DISPLAY_H_
 #define _DISPLAY_H_
 
