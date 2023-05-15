@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - 500) / 2.5,
                            (glutGet(GLUT_SCREEN_HEIGHT) - 500) / 2);
-    glutCreateWindow("OpenGL Window");
+    glutCreateWindow("SpongeBob Universe");
     glEnable(GL_DEPTH_TEST);
 
     // Fonctions appelées

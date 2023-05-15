@@ -56,3 +56,6 @@ dkms.conf
 
 # Exec
 **/spongeBob-universe*
+
+# Test
+test/
