@@ -59,3 +59,7 @@ dkms.conf
 
 # Test
 test/
+
+# VS Code
+**.vscode
+Doxyfile4
