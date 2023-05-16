@@ -9,27 +9,23 @@
 
 // Fonction principale
 int main(int argc, char const *argv[]) {
-    t_matrix sm, tm, am, test, mm;
-    int dimensions[2] = { 4, 5 };
+    t_matrix tm, mm, pm;
+    t_point point;
 
+    point.x = 0;
+    point.y = 0;
+    point.z = 0;
 
-    sm = scaling_matrix(2, 3, 4);
+    pm = point_matrix(point);
     tm = translation_matrix(5, 5, 6);
-    test = zero_matrix(dimensions);
 
-    print_matrix(sm);
+    print_matrix(pm);
     printf("\n\n");
     print_matrix(tm);
     printf("\n\n");
-    print_matrix(test);
-    printf("\n\n");
 
-    am = sum_matrices(1, sm, tm);
-    mm = product_matrices(1, sm, tm);
-
-
-    print_matrix(am);
-    printf("\n\n");
+    // am = sum_matrices(1, sm, tm);
+    mm = product_matrices(1, tm, pm);
     print_matrix(mm);
 
     exit(EXIT_SUCCESS);

@@ -9,10 +9,8 @@
 #include <math.h>
 #include "transformations.h"
 
-// Constantes
-const int transformation_matrix_dimensions[2] = { 4, 4 };
-
 // Variables globales
+int transformation_matrix_dimensions[2] = { 4, 4 };
 
 // Retourne la matrice de translation (tx, ty, tz)
 t_matrix translation_matrix(float tx, float ty, float tz) {

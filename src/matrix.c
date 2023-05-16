@@ -174,8 +174,11 @@ t_matrix mult_matrix(t_matrix operand_left, t_matrix operand_right) {
             "  l'une des deux matrices au moins est vide !\n");
         exit(EXIT_FAILURE);
     }
+
+    fprintf(stderr, "Dimensions = %d %d \n\n", operand_left.dimensions[1], operand_right.dimensions[0]);
+
     // Colonnes == lignes ?
-    if (!operand_left.dimensions[1] != !operand_right.dimensions[0]) {
+    if (operand_left.dimensions[1] != operand_right.dimensions[0]) {
         fprintf(stderr, "- Erreur -> mult_matrix(t_matrix operand_left, t_matrix operand_right) :"
             "  le nombre de colonnes de la matrice opérande gauche (%d) différent du nombre\n"
             "  de lignes de la matrice opérande droite (%d) !\n", operand_left.dimensions[1],
@@ -243,3 +246,20 @@ t_matrix product_matrices(int nb_matrices, t_matrix first_operand, ...) {
     return operand_right;
 }
 
+// Retourne la matrice représentant un point
+t_matrix point_matrix(t_point point) {
+    int point_matrix_dimensions[2] = { 4, 1 };
+
+    // Création de la matrice
+    t_matrix matrix = zero_matrix(point_matrix_dimensions);
+
+    // Initialisations
+    matrix.values[3][0] = 1.0f;
+
+    // Affectation des coordonnées du point
+    matrix.values[0][0] = point.x;
+    matrix.values[1][0] = point.y;
+    matrix.values[2][0] = point.z;
+
+    return matrix;
+}

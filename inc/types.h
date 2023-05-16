@@ -3,8 +3,8 @@
 
 // Constantes
 #define SIZE 1024
-#define WINDOW_WIDTH 500
-#define WINDOW_HEIGHT 500
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 #define DEFAULT_DISTANCE 2048
 #define DEFAULT_ANGLE 0
 #define DEFAULT_ANGLE_STEP 1
@@ -18,5 +18,7 @@ typedef struct {
 typedef struct {
     float x, y, z;
 } t_point;
+
+typedef t_point t_vector;
 
 #endif

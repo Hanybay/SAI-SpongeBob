@@ -8,6 +8,7 @@
 #ifndef _TRANSFORMATIONS_H_
 #define _TRANSFORMATIONS_H_
 
+#include "types.h"
 #include "matrix.h"
 
 // Prototypes des fonctions
@@ -21,5 +22,7 @@ t_matrix rotation_x_matrix(float rt);
 t_matrix rotation_y_matrix(float rt);
 // Retourne la matrice de rotation d'angle (rt) autour de l'axe des z
 t_matrix rotation_z_matrix(float rt);
+// Retourne l'image d'un point par une translation
+t_point translate_point(t_point point, t_vector vector);
 
 #endif

@@ -9,10 +9,9 @@
 #include <math.h>
 #include "transformations.h"
 
-// Constantes
-const int transformation_matrix_dimensions[2] = { 4, 4 };
-
 // Variables globales
+int transformation_matrix_dimensions[2] = { 4, 4 };
+
 
 // Retourne la matrice de translation (tx, ty, tz)
 t_matrix translation_matrix(float tx, float ty, float tz) {
@@ -102,5 +101,18 @@ t_matrix rotation_z_matrix(float rt) {
 
     return matrix;
 }
-  
 
+// Retourne l'image d'un point par une translation
+t_point translate_point(t_point point, t_vector vector) {
+    t_matrix point_representation_matrix = point_matrix(point);
+    t_matrix vectore_translation_matrix = translation_matrix(vector.x, vector.y, vector.z);
+    t_matrix translation_image = product_matrices(1, vectore_translation_matrix, point_representation_matrix);
+
+    t_point image = {
+        translation_image.values[0][0],
+        translation_image.values[1][0],
+        translation_image.values[2][0]
+    };
+
+    return image;
+}
