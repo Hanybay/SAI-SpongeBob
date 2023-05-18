@@ -27,7 +27,7 @@ INC = -I$(HED_DIR)
 
 ## Exécutables
 
-EXEC = SpongeBob-Universe
+EXEC = spongeBob-universe
 
 
 # Fonctions
@@ -54,8 +54,8 @@ clean:
 
 $(EXEC): $(OBJ)
 	@echo "+ Linking..."
-	@$(CC) $(OPTIONS1) $^ -o $@
+	@$(CC) $(OPTIONS1) $^ $(GL_CFLAGS) $(MATH_CFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo "+ + Compiling \"$(notdir $<)\""
-	@$(CC) -o $@ -c $(OPTIONS1) $(GL_CFLAGS) $(INC) $<
+	@$(CC) -o $@ -c $(OPTIONS1) $(INC) $<
