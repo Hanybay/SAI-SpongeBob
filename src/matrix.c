@@ -175,8 +175,6 @@ t_matrix mult_matrix(t_matrix operand_left, t_matrix operand_right) {
         exit(EXIT_FAILURE);
     }
 
-    fprintf(stderr, "Dimensions = %d %d \n\n", operand_left.dimensions[1], operand_right.dimensions[0]);
-
     // Colonnes == lignes ?
     if (operand_left.dimensions[1] != operand_right.dimensions[0]) {
         fprintf(stderr, "- Erreur -> mult_matrix(t_matrix operand_left, t_matrix operand_right) :"

@@ -24,5 +24,9 @@ t_matrix rotation_y_matrix(float rt);
 t_matrix rotation_z_matrix(float rt);
 // Retourne l'image d'un point par une translation
 t_point translate_point(t_point point, t_vector vector);
+// Retourne l'image d'un point par une rotation sur l'axe des x
+t_point rotate_x_point(t_point point, float angle);
+// Retourne l'image d'un point par une rotation sur l'axe des y
+t_point rotate_y_point(t_point point, float angle);
 
 #endif

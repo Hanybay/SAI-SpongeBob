@@ -26,8 +26,8 @@ void display() {
               frustum.top, frustum.near, frustum.far);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eye_position.x, eye_position.y, eye_position.z, 
-        target_position.x, target_position.y, target_position.z, 
+    gluLookAt(eye_position.x, eye_position.y, eye_position.z,
+        target_position.x, target_position.y, target_position.z,
         0, frustum.top, 0);
 
     // Dessin

@@ -105,14 +105,62 @@ t_matrix rotation_z_matrix(float rt) {
 // Retourne l'image d'un point par une translation
 t_point translate_point(t_point point, t_vector vector) {
     t_matrix point_representation_matrix = point_matrix(point);
-    t_matrix vectore_translation_matrix = translation_matrix(vector.x, vector.y, vector.z);
-    t_matrix translation_image = product_matrices(1, vectore_translation_matrix, point_representation_matrix);
+    t_matrix vector_translation_matrix = translation_matrix(vector.x, vector.y, vector.z);
+    t_matrix translation_image = product_matrices(1, vector_translation_matrix, point_representation_matrix);
 
+    // Image du point
     t_point image = {
         translation_image.values[0][0],
         translation_image.values[1][0],
         translation_image.values[2][0]
     };
+
+    // Libération de la mémoire allouée
+    free_matrix(point_representation_matrix);
+    free_matrix(vector_translation_matrix);
+    free_matrix(translation_image);
+
+    return image;
+}
+
+// Retourne l'image d'un point par une rotation sur l'axe des x
+t_point rotate_x_point(t_point point, float angle) {
+    t_matrix point_representation_matrix = point_matrix(point);
+    t_matrix angle_rotation_matrix = rotation_x_matrix(angle);
+    t_matrix rotation_image = product_matrices(1, angle_rotation_matrix, point_representation_matrix);
+
+    // Image du point
+    t_point image = {
+        rotation_image.values[0][0],
+        rotation_image.values[1][0],
+        rotation_image.values[2][0]
+    };
+
+    // Libération de la mémoire allouée
+    free_matrix(point_representation_matrix);
+    free_matrix(angle_rotation_matrix);
+    free_matrix(rotation_image);
+
+    return image;
+}
+
+// Retourne l'image d'un point par une rotation sur l'axe des y
+t_point rotate_y_point(t_point point, float angle) {
+    t_matrix point_representation_matrix = point_matrix(point);
+    t_matrix angle_rotation_matrix = rotation_y_matrix(angle);
+    t_matrix rotation_image = product_matrices(1, angle_rotation_matrix, point_representation_matrix);
+
+    // Image du point
+    t_point image = {
+        rotation_image.values[0][0],
+        rotation_image.values[1][0],
+        rotation_image.values[2][0]
+    };
+
+    // Libération de la mémoire allouée
+    free_matrix(point_representation_matrix);
+    free_matrix(angle_rotation_matrix);
+    free_matrix(rotation_image);
 
     return image;
 }

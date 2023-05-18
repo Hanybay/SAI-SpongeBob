@@ -11,8 +11,8 @@
 #include "types.h"
 
 // Constantes
-#define DEFAULT_FRUSTUM { .left = -2048, .right = 2048, .top = 2048, .bottom = -2048, .near = 1024, .far = 4096 }
-#define DEFAULT_EYE_POSITION { DEFAULT_DISTANCE, DEFAULT_DISTANCE, DEFAULT_DISTANCE }
+#define DEFAULT_FRUSTUM { .left = -4096, .right = 4096, .top = 2048, .bottom = -2048, .near = 102.4, .far = 16384 }
+#define DEFAULT_EYE_POSITION { 0, 4096, 4096 }
 #define DEFAULT_TARGET_POSITION { 0, 0, 0 }
 
 // Prototypes des fonctions
