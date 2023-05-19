@@ -13,21 +13,20 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <math.h>
-
-// Constantes
-#define DEFAULT_FOV 45.0f
-#define DEFAULT_CLIP_FRONT 0.1f
-#define DEFAULT_CLIP_BACK 100.0f
-#define DEFAULT_CAMERA_SPEED 3.0f
+#include "types.h"
+#include "view.h"
+#include "drawing.h"
 
 // Variables globales
-float camera_horizontal_angle = 0.0f; // Angle horizontal de la caméra en degrés
-float camera_vertical_angle = 0.0f;   // Angle vertical de la caméra en degrés
-float camera_distance = 5.0f;         // Distance entre la caméra et sa cible
-float camera_position_x = 1.0f,       // Coordonnée x de la position de la caméra
-      camera_position_y = 1.0f,       // Coordonnée y de la position de la caméra
-      camera_position_z = -3.0f;      // Coordonnée z de la position de la caméra
-    
+float camera_horizontal_angle = 0.0f;        // Angle horizontal de la caméra en degrés
+float camera_vertical_angle = 0.0f;          // Angle vertical de la caméra en degrés
+t_point camera_position = {                  // Position de la caméra
+    1.0f, 1.0f, -3.0f
+};
+float camera_distance = 5.0f;                // Distance entre la caméra et sa cible
+float window_width = DEFAULT_WINDOW_WIDTH,   // Largeur de la fenêtre
+      window_height = DEFAULT_WINDOW_HEIGHT; // Hauteur de la fenêtre
+float aspect;
 
 
 // Affiche la notice d'utilisation
@@ -59,23 +58,33 @@ void usage(char * programme, char * message, ...) {
 
 // Réalise l'affichage
 void display() {
-    float camera_target_x, camera_target_z, camera_target_y;
+    t_point camera_target;
+    t_point view_finder = {
+        window_width / 2.0f, window_height / 2.0f, 0.0f
+    };
+    t_color view_finder_color = {
+        1.0f, 0.0f, 0.0f
+    };
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    // Projection perspective pour le rendu 3D
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(DEFAULT_FOV, aspect, DEFAULT_CLIP_FRONT, DEFAULT_CLIP_BACK);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     // Caméra
     // // Calcul de la cible de la caméra
-    camera_target_x = sin(camera_horizontal_angle * M_PI / 360.0f) * camera_distance + camera_position_x;
-    camera_target_y = sin(camera_vertical_angle * M_PI / 180.0f) * camera_distance + camera_position_y;
-    camera_target_z = cos(camera_horizontal_angle * M_PI / 360.0f) * camera_distance + camera_position_z;
-
-    printf("-- x=%f y=%f z=%f\n", camera_target_x, camera_target_y, camera_target_z);
+    camera_target.x = sin(camera_horizontal_angle * M_PI / 360.0f) * camera_distance + camera_position.x;
+    camera_target.y = sin(camera_vertical_angle * M_PI / 180.0f) * camera_distance + camera_position.y;
+    camera_target.z = cos(camera_horizontal_angle * M_PI / 360.0f) * camera_distance + camera_position.z;
 
     gluLookAt(// Position de la caméra
-              camera_position_x, camera_position_y, camera_position_z,
+              camera_position.x, camera_position.y, camera_position.z,
               // Point vers lequel la caméra regarde
-              camera_target_x, camera_target_y, camera_target_z,
+              camera_target.x, camera_target.y, camera_target.z,
               // Direction "vers le haut" de la caméra
               0.0f, 1.0f, 0.0f);
 
@@ -93,13 +102,22 @@ void display() {
         glVertex3f(0.0f, 0.0f, 0.0f); // Centre
     glEnd();
 
+    // Projection orthogonale pour le rendu 2D
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, window_width, window_height, 0.0, -1.0, 1.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    drawPlus2D(view_finder, 20.0f, view_finder_color);
+
     glutSwapBuffers();
 }
 
 // Gère les événements de redimensionnement de la fenêtre
 void reshape(int width, int height) {
     if(height == 0) height = 1; 
-    float aspect = (float)width / (float)height;
+    aspect = (float)width / (float)height;
 
     glViewport(0, 0, width, height);
 
@@ -108,6 +126,10 @@ void reshape(int width, int height) {
     gluPerspective(DEFAULT_FOV, aspect, DEFAULT_CLIP_FRONT, DEFAULT_CLIP_BACK);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    // Récupèration des nouvelles dimensions
+    window_height = height;
+    window_width = width;
 }
 
 // Gère les événements clavier
@@ -120,15 +142,21 @@ void keyboard(unsigned char key, int x, int y) {
             camera_horizontal_angle += camera_speed;
 
             // Limiter l'angle pour éviter de regarder trop à gauche
-            if (camera_horizontal_angle > 180.0f)
-                camera_horizontal_angle = 180.0f;
+            if (camera_horizontal_angle > 179.0f)
+                camera_horizontal_angle = 179.0f;
+
+            // Mise à jour des vecteurs de déplacement
+            rotate_movement_vectors(camera_vertical_angle, camera_horizontal_angle);
             break;
         case 'd': // Déplacement de la caméra vers la droite
             camera_horizontal_angle -= camera_speed;
 
             // Limiter l'angle pour éviter de regarder trop à droite
-            if (camera_horizontal_angle < -180.0f)
-                camera_horizontal_angle = -180.0f;
+            if (camera_horizontal_angle < -179.0f)
+                camera_horizontal_angle = -179.0f;
+
+            // Mise à jour des vecteurs de déplacement
+            rotate_movement_vectors(camera_vertical_angle, camera_horizontal_angle);  
             break;
         case 's': // Déplacement de la caméra vers le bas
             camera_vertical_angle -= camera_speed;
@@ -149,6 +177,25 @@ void keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
+// Gère les événements clavier spécial
+void special_keyboard(int key, int x, int y) {
+    switch (key) {
+        case GLUT_KEY_UP:
+            move_forward();
+            break;
+        case GLUT_KEY_DOWN:
+            move_back();
+            break;
+        case GLUT_KEY_LEFT:
+            move_left();
+            break;
+        case GLUT_KEY_RIGHT:
+            move_right();
+    }
+
+    glutPostRedisplay();
+}
+
 // Fonction principale
 int main(int argc, char **argv) {
     // Affichage de la notice d'utilisation
@@ -157,12 +204,16 @@ int main(int argc, char **argv) {
     // Initialisation des paramètres OpenGL
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE);
-    glutInitWindowSize(800, 600);
+    glutInitWindowSize(window_width, window_height);
     glutInitWindowPosition(50, 50);
     glutCreateWindow("SpongeBob Universe");
+
+    // Fonctions gérant la fenêtre et ces événements
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
+    glutSpecialFunc(special_keyboard);
+
     glEnable(GL_DEPTH_TEST);
 
     glutMainLoop();
