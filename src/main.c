@@ -58,13 +58,16 @@ void usage(char * programme, char * message, ...) {
 
 // Réalise l'affichage
 void display() {
+    // Caméra
     t_point camera_target;
-    t_point view_finder = {
-        window_width / 2.0f, window_height / 2.0f, 0.0f
-    };
-    t_color view_finder_color = {
-        1.0f, 0.0f, 0.0f
-    };
+    // Viseur
+    t_point view_finder;
+    t_color view_finder_color;
+    // Plan
+    t_point origin, y_up, x_left, z_front;
+    t_color y_axis_color, x_axis_color, z_axis_color;
+    // Cube
+    t_point corner1, corner2;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -88,19 +91,37 @@ void display() {
               // Direction "vers le haut" de la caméra
               0.0f, 1.0f, 0.0f);
 
+    // Plateforme
     glColor3f(1.0f, 1.0f, 1.0f);  // Couleur de la plateforme
     glBegin(GL_QUADS);
-        glVertex3f(-3.0f, 0.0f, -3.0f); // coin inférieur gauche
-        glVertex3f( 3.0f, 0.0f, -3.0f); // coin inférieur droit
-        glVertex3f( 3.0f, 0.0f,  3.0f); // coin supérieur droit
-        glVertex3f(-3.0f, 0.0f,  3.0f); // coin supérieur gauche
+        glVertex3f(-3.0f, 0.0f, -3.0f); // Coin inférieur gauche
+        glVertex3f( 3.0f, 0.0f, -3.0f); // Coin inférieur droit
+        glVertex3f( 3.0f, 0.0f,  3.0f); // Coin supérieur droit
+        glVertex3f(-3.0f, 0.0f,  3.0f); // Coin supérieur gauche
     glEnd();
 
-    glColor3f(1.0f, 0.0f, 0.0f);  // Couleur des points
-    glPointSize(3.0);            // Taille des points 
-    glBegin(GL_POINTS);
-        glVertex3f(0.0f, 0.0f, 0.0f); // Centre
-    glEnd();
+    // Plan
+    // // Origine
+    INIT_POINT(origin, 0.0f, 0.0f, 0.0f);
+
+    // // Axe des y
+    INIT_POINT(y_up, 0.0f, 10.0f, 0.0f);
+    INIT_COLOR(y_axis_color, 1.0f, 0.0f, 0.0f);
+    drawLine(origin, y_up, y_axis_color, 3.0f);
+
+    // // Axe des x
+    INIT_POINT(x_left, 10.0f, 0.0f, 0.0f);
+    INIT_COLOR(x_axis_color, 0.0f, 1.0f, 0.0f);
+    drawLine(origin, x_left, x_axis_color, 3.0f);
+
+    // // Axe des z
+    INIT_POINT(z_front, 0.0f, 0.0f, 10.0f);
+    INIT_COLOR(z_axis_color, 0.0f, 0.0f, 1.0f);
+    drawLine(origin, z_front, z_axis_color, 3.0f);
+
+    // Dessin d'un cube
+    INIT_POINT(corner2, 1.0f, 1.0f, 1.0f);
+    drawCube(origin, corner2, y_axis_color);
 
     // Projection orthogonale pour le rendu 2D
     glMatrixMode(GL_PROJECTION);
@@ -109,7 +130,9 @@ void display() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    drawPlus2D(view_finder, 20.0f, view_finder_color);
+    INIT_POINT(view_finder, window_width / 2.0f, window_height / 2.0f, 0.0f);
+    INIT_COLOR(view_finder_color, 0.0f, 1.0f, 0.0f);
+    drawPlus2D(view_finder, 20.0f, view_finder_color, 1.0f);
 
     glutSwapBuffers();
 }

@@ -16,6 +16,12 @@ typedef struct {
     float x, y, z;
 } t_point;
 
+#define INIT_POINT(p, _x, _y, _z) do { \
+    (p).x = (_x); \
+    (p).y = (_y); \
+    (p).z = (_z); \
+} while (0)
+
 // // Type représentant un vecteur
 typedef t_point t_vector;
 
@@ -23,5 +29,11 @@ typedef t_point t_vector;
 typedef struct {
     float r, g, b;
 } t_color;
+
+#define INIT_COLOR(c, _r, _g, _b) do { \
+    (c).r = (_r); \
+    (c).g = (_g); \
+    (c).b = (_b); \
+} while (0)
 
 #endif
