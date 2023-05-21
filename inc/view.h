@@ -29,5 +29,7 @@ void move_left();
 void move_right();
 // Applique une rotation aux vecteurs de déplacement
 void rotate_movement_vectors(float vertical_angle, float horizontal_angle);
+// Met à jour la caméra
+void update_camera(float camera_horizontal_angle, float camera_vertical_angle, float camera_distance);
 
 #endif

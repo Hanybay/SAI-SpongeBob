@@ -10,6 +10,10 @@
 
 #include "types.h"
 
+// Constantes
+#define DEFAULT_SPHERE_RESOLUTION 32
+
+
 // Prototypes des fonctions
 // Dessine un plus à la position donnée
 void drawPlus(t_point position, float size, t_color color, float line_width);
@@ -19,5 +23,7 @@ void drawPlus2D(t_point position, float size, t_color color, float line_width);
 void drawLine(t_point corner1, t_point corner2, t_color color, float line_width);
 // Dessine un cube
 void drawCube(t_point corner1, t_point corner2, t_color color);
+// Dessine une sphère (ATTENTION ! Dessin à l'origine)
+void drawSphere(t_point position, float radius, t_color color);
 
 #endif

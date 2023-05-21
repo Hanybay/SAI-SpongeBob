@@ -100,3 +100,14 @@ void drawCube(t_point corner1, t_point corner2, t_color color) {
         glVertex3f(corner1.x, corner1.y, corner2.z);
     glEnd();
 }
+
+// Dessine une sphère
+void drawSphere(t_point position, float radius, t_color color) {
+    glPushMatrix();
+    glTranslatef(position.x, position.y, position.z);
+
+    glColor3f(color.r, color.g, color.b);
+    glutSolidSphere(radius, DEFAULT_SPHERE_RESOLUTION, DEFAULT_SPHERE_RESOLUTION);
+
+    glPopMatrix(); 
+}

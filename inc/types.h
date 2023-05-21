@@ -1,6 +1,15 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <math.h>
+
 // Constantes
 #define DEFAULT_FOV 45.0f
 #define DEFAULT_CLIP_FRONT 0.1f
@@ -20,6 +29,10 @@ typedef struct {
     (p).x = (_x); \
     (p).y = (_y); \
     (p).z = (_z); \
+} while (0)
+
+#define PRINT_POINT(p) do { \
+    printf("(x = %f, y = %f, z = %f)\n", (p).x, (p).y, (p).z); \
 } while (0)
 
 // // Type représentant un vecteur
