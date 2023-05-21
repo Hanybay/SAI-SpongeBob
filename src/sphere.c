@@ -46,16 +46,16 @@ void addSpecie(){
 }
 
 
-void moveSpecie(t_sphere s){
-    s.position.x += s.speed.x;
-    s.position.y += s.speed.y;
-    s.position.z += s.speed.z;
+void moveSpecie(t_sphere *s){
+    s->position.x += s->speed.x / 100;
+    s->position.y += s->speed.y;
+    s->position.z += s->speed.z;
 }
 
 
 void updateSpherePosition(){
     for(int i=0; i<spheres_counter;i++){
-        moveSpecie(spheres[i]);
+        moveSpecie(&spheres[i]);
     }  
 }
 
