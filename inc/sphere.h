@@ -33,7 +33,7 @@ int isSphereCollided(t_sphere s1, t_sphere s2);
 // Rajoute une nouvelle espèce dans le monde
 void addSpecie();
 // Avance l'espèce vers l'avant
-void moveSpecie(t_sphere s);
+void moveSpecie(t_sphere *s);
 // Mets à jour la position de la sphere
 void updateSpherePosition();
 // Dessine les espèces
