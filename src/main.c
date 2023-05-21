@@ -10,6 +10,7 @@
 #include "drawing.h"
 #include "bullet.h"
 #include "object.h"
+#include "sphere.h"
 
 // Variables globales
 float camera_horizontal_angle = 0.0f;        // Angle horizontal de la caméra en degrés
@@ -87,6 +88,9 @@ void display() {
     // Balles
     draw_bullets();
 
+    // Espèces
+    drawSpecies();
+
     // Projection orthogonale pour le rendu 2D
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -104,6 +108,9 @@ void display() {
 void update() {
     // Balles
     update_bullets_positions();
+
+    // Espèces
+    updateSpherePosition();
 
     glutPostRedisplay();
 }
@@ -160,6 +167,9 @@ void keyboard(unsigned char key, int x, int y) {
             break;
         case 'b': // Tire une balle
             shoot_bullet(camera_position, camera_target, 0.1);
+            break;
+        case 'w': // Crée une espèce
+            addSpecie();
             break;
     }
 
