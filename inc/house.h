@@ -20,10 +20,8 @@
 // Types
 
 // // Maison
-
 typedef struct {
     t_point position;
-    t_point body_corner1, body_corner2;
     float width, depth;
     float body_height, roof_height;
     t_color body_color, roof_color, window_color, door_color;
@@ -34,10 +32,12 @@ typedef struct {
 // Ajoute une maison
 int add_house(t_point position);
 // Vérifie si la position n'est pas occupée par une autre maison
-int check_house_position(t_house house);
+int check_house(t_house house);
 // Dessine une maison
 void draw_house(t_house house);
 // Dessine toutes les maisons
 void draw_houses();
+// Génère aléatoirement des maisons dans la zone située entre min et max
+void generate_random_houses(int count, t_point min, t_point max);
 
 #endif

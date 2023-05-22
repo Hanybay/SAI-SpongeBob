@@ -64,6 +64,6 @@ void drawSpecies(){
     for (int i = 0; i<spheres_counter; i++) {
         t_sphere *s = &spheres[i];
     
-        drawSphere(s->position, DEFAULT_SPHERE_RADIUS, (t_color)DEFAULT_SPHERE_COLOR);
+        draw_sphere(s->position, DEFAULT_SPHERE_RADIUS, (t_color)DEFAULT_SPHERE_COLOR);
     }
 }

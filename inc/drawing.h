@@ -12,6 +12,7 @@
 
 // Constantes
 #define DEFAULT_SPHERE_RESOLUTION 32
+#define DEFAULT_SKYBOX_COLOR { 157 / 255.0f, 193 / 255.0f, 224 / 255.0f }
 
 
 // Prototypes des fonctions
@@ -35,5 +36,7 @@ void draw_cylinder(t_point position, float radius, float height, int slices, int
 void draw_ellipsoid(t_point position, float radius_x, float radius_y, float height, int slices, int stacks, t_color color);
 // Dessine un prisme triangulaire
 void draw_triangular_prism(t_point position, float base_width, float height, float depth, t_color color);
+// Dessine une skybox
+void draw_skybox(t_point position, float width);
 
 #endif

@@ -11,24 +11,6 @@
 #include <math.h>
 #include "drawing.h"
 #include "transformations.h"
-  
-
-// Dessine un plus à la position donnée
-void draw_plus(t_point position, float size, t_color color, float line_width) {
-    // Épaisseur des lignes
-    glLineWidth(line_width);
-    glColor3f(color.r, color.g, color.b);
-
-    glBegin(GL_LINES);
-        // Ligne verticale
-        glVertex3f(position.x, position.y - size / 2.0f, position.z);
-        glVertex3f(position.x, position.y + size / 2.0f, position.z);
-
-        // Ligne horizontale
-        glVertex3f(position.x - size / 2.0f, position.y, position.z);
-        glVertex3f(position.x + size / 2.0f, position.y, position.z);
-    glEnd();
-}
 
 // Dessine un plus en 2D à la position donnée (position.z inutile)
 void draw_plus_2D(t_point position, float size, t_color color, float line_width) {
@@ -112,13 +94,6 @@ void draw_house_door(int is_open, t_point corner1, t_point corner2, t_color colo
         glTranslatef(corner1.x, corner1.y, corner1.z);
         glRotatef(90, 0.0f, 1.0f, 0.0f);
         glTranslatef(-corner1.x, -corner1.y, -corner1.z);
-    }
-
-    static int first_print = 1;
-    if (first_print) {
-        PRINT_POINT(corner1);
-        PRINT_POINT(corner2);
-        first_print = 0;
     }
 
     glColor3f(color.r, color.g, color.b);
@@ -238,65 +213,11 @@ void draw_sphere(t_point position, float radius, t_color color) {
     glPopMatrix();
 }
 
-// Dessine un cône tronqué
-void draw_cone_truncated(t_point position, float bottom_base_radius, float top_base_radius, float height, int slices, int stacks, t_color color) {
-    glPushMatrix();
-    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-    glTranslatef(position.x, position.y, position.z);
-
-    glColor3f(color.r, color.g, color.b);
-
-    // Base inférieure
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(0.0f, 0.0f, 0.0f);  // Centre de la base
-        for (int i = 0; i <= slices; ++i) {
-            float theta = (float)i * 2.0f * M_PI / slices;
-            float x = bottom_base_radius * cosf(theta);
-            float y = bottom_base_radius * sinf(theta);
-            glVertex3f(x, y, 0.0f);
-        }
-    glEnd();
-
-    // Base supérieure
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(0.0f, 0.0f, height);  // Centre du toit
-        for (int i = 0; i <= slices; ++i) {
-            float theta = (float)i * 2.0f * M_PI / slices;
-            float x = top_base_radius * cosf(theta);
-            float y = top_base_radius * sinf(theta);
-            glVertex3f(x, y, height);
-        }
-    glEnd();
-
-    // Paroi
-    for (int i = 0; i < slices; i++) {
-        float theta = (float)i * 2.0f * M_PI / slices;
-        float next_theta = (float)(i + 1) * 2.0f * M_PI / slices;
-
-        glBegin(GL_TRIANGLE_STRIP);
-            for (int j = 0; j <= stacks; j++) {
-                float ratio = (float)j / stacks;
-                float z = height * ratio;
-                float radius = bottom_base_radius + (top_base_radius - bottom_base_radius) * ratio;
-
-                float x = radius * cosf(theta);
-                float y = radius * sinf(theta);
-                glVertex3f(x, y, z);
-
-                x = radius * cosf(next_theta);
-                y = radius * sinf(next_theta);
-                glVertex3f(x, y, z);
-            }
-        glEnd();
-    }
-
-    glPopMatrix();
-}
-
 // Dessine un cylindre
 void draw_cylinder(t_point position, float radius, float height, int slices, int stacks, t_color color) {
     glPushMatrix();
     glTranslatef(position.x, position.y, position.z);
+    glRotatef(-90, 1.0f, 0.0f, 0.0f);
 
     glColor3f(color.r, color.g, color.b);
 
@@ -344,16 +265,6 @@ void draw_cylinder(t_point position, float radius, float height, int slices, int
     glPopMatrix();
 }
 
-// Dessine un ellipsoïde
-void draw_ellipsoid(t_point position, float radius_x, float radius_y, float height, int slices, int stacks, t_color color) {
-    glPushMatrix();
-    glScalef(radius_x, radius_y, height);
-
-    draw_cylinder(position, 1.0f, 1.0f, slices, stacks, color);
-
-    glPopMatrix();
-}
-
 // Dessine un prisme triangulaire
 void draw_triangular_prism(t_point position, float base_width, float height, float depth, t_color color) {
     glPushMatrix();
@@ -395,4 +306,25 @@ void draw_triangular_prism(t_point position, float base_width, float height, flo
     glEnd();
 
     glPopMatrix();
+}
+
+// Dessine une skybox
+void draw_skybox(t_point position, float width) {
+    t_color sky_color = DEFAULT_SKYBOX_COLOR;
+    t_point min_corner = {
+        position.x - width,
+        position.y - width,
+        position.z - width
+    }, max_corner = {
+        position.x + width,
+        position.y + width,
+        position.z + width  
+    };
+
+    glDepthMask(GL_FALSE);  // depth-write off
+
+    // Dessin de la skybox
+    draw_cube(min_corner, max_corner, sky_color);
+
+    glDepthMask(GL_TRUE);  // depth-write on
 }

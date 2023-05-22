@@ -12,6 +12,7 @@
 #include "object.h"
 #include "house.h"
 #include "sphere.h"
+#include "tree.h"
 
 // Variables globales
 float camera_horizontal_angle = 0.0f;        // Angle horizontal de la caméra en degrés
@@ -26,6 +27,18 @@ float window_width = DEFAULT_WINDOW_WIDTH,   // Largeur de la fenêtre
 float aspect;
 float delta_time = 0;
 int last_time = 0;
+
+t_point platform_min_corner = {
+    -100.0f, 0.0f, -100.0f
+}, platform_max_corner = {
+    100.0f, 0.0f, 100.0f
+};
+
+// Horloge précédente en millisecondes
+static clock_t previous_clock = 0;
+
+// Délai de mise à jour maximale en millisecondes
+static const int update_delay = 1000 / 30;
 
 
 // Affiche la notice d'utilisation
@@ -74,13 +87,16 @@ void display() {
     // Caméra
     update_camera(camera_horizontal_angle, camera_vertical_angle, camera_distance);
 
+    // Skybox
+    draw_skybox(camera_position, 50.0f);
+
     // Plateforme
     glColor3f(1.0f, 1.0f, 1.0f);  // Couleur de la plateforme
     glBegin(GL_QUADS);
-        glVertex3f(-100.0f, 0.0f, -100.0f); // Coin inférieur gauche
-        glVertex3f( 100.0f, 0.0f, -100.0f); // Coin inférieur droit
-        glVertex3f( 100.0f, 0.0f,  100.0f); // Coin supérieur droit
-        glVertex3f(-100.0f, 0.0f,  100.0f); // Coin supérieur gauche
+        glVertex3f(platform_min_corner.x, platform_min_corner.y, platform_min_corner.z); // Coin inférieur gauche
+        glVertex3f(platform_max_corner.x, platform_min_corner.y, platform_min_corner.z); // Coin inférieur droit
+        glVertex3f(platform_max_corner.x, platform_max_corner.y, platform_max_corner.z); // Coin supérieur droit
+        glVertex3f(platform_min_corner.x, platform_max_corner.y, platform_max_corner.z); // Coin supérieur gauche
     glEnd();
 
     // Plan
@@ -89,11 +105,14 @@ void display() {
     // Balles
     draw_bullets();
 
-    // Maisons
-    draw_houses();
+    // Arbres
+    draw_trees();
 
     // Espèces
     drawSpecies();
+
+    // Maisons
+    draw_houses();
 
     // Projection orthogonale pour le rendu 2D
     glMatrixMode(GL_PROJECTION);
@@ -116,7 +135,16 @@ void update() {
     // Espèces
     updateSpherePosition();
 
-    glutPostRedisplay();
+    // Horloge actuelle en millisecondes
+    clock_t current_clock = clock() * 1000 / CLOCKS_PER_SEC;
+
+    // Délai de mise à jour atteint
+    if (current_clock - previous_clock >= update_delay) {
+        // Mise à jour de l'horloge précédente
+        previous_clock = current_clock;
+
+        glutPostRedisplay();
+    }
 }
 
 // Gère les événements de redimensionnement de la fenêtre
@@ -176,8 +204,6 @@ void keyboard(unsigned char key, int x, int y) {
             addSpecie();
             break;
     }
-
-    glutPostRedisplay();
 }
 
 // Gère les événements clavier spécial
@@ -195,16 +221,16 @@ void special_keyboard(int key, int x, int y) {
         case GLUT_KEY_RIGHT:
             move_right();
     }
-
-    glutPostRedisplay();
 }
 
 // Fonction principale
 int main(int argc, char **argv) {
-    t_point position;
 
     // Affichage de la notice d'utilisation
     help_notice();
+
+    // Initialisations
+    srand(time(NULL));
 
     // Initialisation des paramètres OpenGL
     glutInit(&argc, argv);
@@ -226,12 +252,8 @@ int main(int argc, char **argv) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Initialisations du monde
-    INIT_POINT(position,  0.0f, 0.0f, 0.0f);
-    add_house(position);
-    INIT_POINT(position,  5.0f, 0.0f, 0.0f);
-    add_house(position);
-    INIT_POINT(position,  5.0f, 0.0f, 10.0f);
-    add_house(position);
+    generate_random_houses(10, platform_min_corner, platform_max_corner);
+    generate_random_trees(50, platform_min_corner, platform_max_corner);
 
     glutMainLoop();
     
