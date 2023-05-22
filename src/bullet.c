@@ -73,6 +73,6 @@ void draw_bullets() {
     for (int i = 0; i < bullets_count; i++) {
         t_bullet *bullet = &bullets[i];
     
-        drawSphere(bullet->position, DEFAULT_BULLET_RADIUS, bullet_color);
+        draw_sphere(bullet->position, DEFAULT_BULLET_RADIUS, bullet_color);
     }
 }

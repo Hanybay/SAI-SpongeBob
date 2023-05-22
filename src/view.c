@@ -46,8 +46,7 @@ void rotate_movement_vectors(float vertical_angle, float horizontal_angle) {
                    default_left = DEFAULT_LEFT_MOVE;
     float horizontal_angle_radians;
 
-    // Conversion des angles en radian
-    printf("\n-----------\nangle = %f\n\n", horizontal_angle);
+    // Conversion des angles en radians
     horizontal_angle_radians = -horizontal_angle * (M_PI  / 360);
 
     // Rotation par rapport à l'angle horizontal (autour de l'axe y)
@@ -62,8 +61,6 @@ void rotate_movement_vectors(float vertical_angle, float horizontal_angle) {
     right.x = -left.x;
     right.y = -left.y;
     right.z = -left.z;
-
-    PRINT_POINT(forward);
 }
 
 // Met à jour la caméra

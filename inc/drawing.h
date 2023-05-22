@@ -16,14 +16,24 @@
 
 // Prototypes des fonctions
 // Dessine un plus à la position donnée
-void drawPlus(t_point position, float size, t_color color, float line_width);
+void draw_plus(t_point position, float size, t_color color, float line_width);
 // Dessine un plus en 2D à la position donnée (position.z inutile)
-void drawPlus2D(t_point position, float size, t_color color, float line_width);
+void draw_plus_2D(t_point position, float size, t_color color, float line_width);
 // Dessine une ligne entre deux points
-void drawLine(t_point corner1, t_point corner2, t_color color, float line_width);
+void draw_line(t_point corner1, t_point corner2, t_color color, float line_width);
 // Dessine un cube
-void drawCube(t_point corner1, t_point corner2, t_color color);
+void draw_cube(t_point corner1, t_point corner2, t_color color);
+// Dessine un cube avec des trous (corps d'une maison)
+void draw_house_cube(t_point corner1, t_point corner2, t_color color, t_color door_color, t_color window_color);
 // Dessine une sphère (ATTENTION ! Dessin à l'origine)
-void drawSphere(t_point position, float radius, t_color color);
+void draw_sphere(t_point position, float radius, t_color color);
+// Dessine un cône tronqué
+void draw_cone_truncated(t_point position, float bottom_base_radius, float top_base_radius, float height, int slices, int stacks, t_color color);
+// Dessine un cylindre
+void draw_cylinder(t_point position, float radius, float height, int slices, int stacks, t_color color);
+// Dessine un ellipsoïde
+void draw_ellipsoid(t_point position, float radius_x, float radius_y, float height, int slices, int stacks, t_color color);
+// Dessine un prisme triangulaire
+void draw_triangular_prism(t_point position, float base_width, float height, float depth, t_color color);
 
 #endif

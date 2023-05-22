@@ -10,6 +10,7 @@
 #include "drawing.h"
 #include "bullet.h"
 #include "object.h"
+#include "house.h"
 
 // Variables globales
 float camera_horizontal_angle = 0.0f;        // Angle horizontal de la caméra en degrés
@@ -86,6 +87,10 @@ void display() {
 
     // Balles
     draw_bullets();
+
+    // Maisons
+    draw_houses();
+
 
     // Projection orthogonale pour le rendu 2D
     glMatrixMode(GL_PROJECTION);
@@ -187,6 +192,8 @@ void special_keyboard(int key, int x, int y) {
 
 // Fonction principale
 int main(int argc, char **argv) {
+    t_point position;
+
     // Affichage de la notice d'utilisation
     help_notice();
 
@@ -205,6 +212,17 @@ int main(int argc, char **argv) {
     glutSpecialFunc(special_keyboard);
 
     glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Initialisations du monde
+    INIT_POINT(position,  0.0f, 0.0f, 0.0f);
+    add_house(position);
+    INIT_POINT(position,  5.0f, 0.0f, 0.0f);
+    add_house(position);
+    INIT_POINT(position,  5.0f, 0.0f, 10.0f);
+    add_house(position);
 
     glutMainLoop();
     
