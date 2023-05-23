@@ -18,7 +18,7 @@
 #define SPONGEBOB_SPHERE_COLOR { 1.0f, 0.8196f, 0.0f }
 #define SPPONGEPAT_SPHERE_COLOR { 1.0f, 0.7863f, 0.3981f }
 #define DEFAULT_SPHERE_RADIUS 0.5
-#define COLLISION_DELAY 3000     // Temps écoulé entre chaque collision en millisecondes
+#define COLLISION_DELAY 2000     // Temps écoulé entre chaque collision en millisecondes
 
 // Types
 
@@ -46,5 +46,7 @@ void moveSpecie(t_sphere *s);
 void updateSpherePosition();
 // Dessine les espèces
 void drawSpecies();
+// Mélange deux couleurs passées en paramètre
+t_color combineColours(t_color c1, t_color c2);
 
 #endif

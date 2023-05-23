@@ -1,7 +1,7 @@
 /* 
 * Module : principal
 * Type : fichier source
-* Auteur : Mourtaza AKIL
+* Auteurs : Mourtaza AKIL, BAYAZID Hany
 * Date de création : 
 */
 
@@ -28,6 +28,7 @@ float aspect;
 float delta_time = 0;
 int last_time = 0;
 int frames_counter = 0;
+int onclickChoice = 0;
 
 t_point platform_min_corner = {
     -100.0f, 0.0f, -100.0f
@@ -209,7 +210,9 @@ void keyboard(unsigned char key, int x, int y) {
             shoot_bullet(camera_position, camera_target, 0.1);
             break;
         case 'w': // Crée une espèce
-            addSpecie((t_color)DEFAULT_SPHERE_COLOR,0);
+             addSpecie((onclickChoice == 1 ? (t_color) SPONGEBOB_SPHERE_COLOR : (t_color)PATRICK_SPHERE_COLOR), 0);
+             onclickChoice = (onclickChoice == 1) ? 0 : 1;
+             printf("COULEUR VAL = %d\n",onclickChoice);
             break;
     }
 }

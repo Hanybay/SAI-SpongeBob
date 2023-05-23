@@ -81,10 +81,11 @@ void speciesCollisions() {
                 if ((currentTime - spheres[i].collisionTime > COLLISION_DELAY) &&
                     (currentTime - spheres[j].collisionTime > COLLISION_DELAY) &&
                     (spheres_counter < MAX_SPHERES)) {
-                    addSpecie((t_color) SPPONGEPAT_SPHERE_COLOR,1);
+                        t_color mix = combineColours(spheres[i].colour,spheres[j].colour);
+                        addSpecie(mix,1);
                     // Mise à jour du temps de la dernière collision
-                    spheres[i].collisionTime = currentTime;
-                    spheres[j].collisionTime = currentTime;
+                        spheres[i].collisionTime = currentTime;
+                        spheres[j].collisionTime = currentTime;
                 }
                 
             }
@@ -128,9 +129,9 @@ void addSpecie(t_color couleur,int choix){
 
 
 void moveSpecie(t_sphere *s){
-    s->position.x += s->speed.x / 100;
+    s->position.x += s->speed.x / random_int(100,500);
     s->position.y += s->speed.y;
-    s->position.z += s->speed.z / 100;
+    s->position.z += s->speed.z / random_int(100,500);
 
 
     if (s->speed.x > s->previousSpeed.x) {
@@ -162,4 +163,21 @@ void drawSpecies(){
         draw_sphere(s->position, DEFAULT_SPHERE_RADIUS, s->colour);
         // printf("Je dessine la sphère n°%d et sa position est x = %f y = %f z = %f\n",i,s->position.x,s->position.y,s->position.z);
     }
+}
+
+
+t_color combineColours(t_color c1, t_color c2) {
+    t_color res;
+    float biais = ((rand() % 100) / 100.0f - 0.5f);
+    res.r = (c1.r + c2.r) / 2.0f + biais;
+    res.g = (c1.g + c2.g) / 2.0f + biais;
+    res.b = (c1.b + c2.b) / 2.0f + biais;
+
+
+    // Limiter les composantes de couleur entre 0 et 1
+    res.r = fmax(fmin(res.r, 1.0f), 0.0f);
+    res.g = fmax(fmin(res.g, 1.0f), 0.0f);
+    res.b = fmax(fmin(res.b, 1.0f), 0.0f);
+
+    return res;
 }
