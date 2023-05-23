@@ -18,16 +18,18 @@
 #define SPONGEBOB_SPHERE_COLOR { 1.0f, 0.8196f, 0.0f }
 #define SPPONGEPAT_SPHERE_COLOR { 1.0f, 0.7863f, 0.3981f }
 #define DEFAULT_SPHERE_RADIUS 0.5
+#define COLLISION_DELAY 3000     // Temps écoulé entre chaque collision en millisecondes
 
 // Types
 
-// // Sphere
+// Sphere
 typedef struct {
     t_point position;
     t_point speed;
     t_point previousSpeed;
     t_color colour;
     float radius;
+    int collisionTime; 
 } t_sphere;
 
 

@@ -40,7 +40,8 @@ int isSphereCollided(t_sphere s1, t_sphere s2) {
 }*/
 
 
-void speciesCollisions() {
+void speciesCollisions() { 
+    int currentTime = glutGet(GLUT_ELAPSED_TIME);
     for (int i = 0; i < spheres_counter; i++) {
         for (int j = i + 1; j < spheres_counter; j++) {
             float dx = spheres[i].position.x - spheres[j].position.x;
@@ -58,7 +59,8 @@ void speciesCollisions() {
                 if(collisionVector != 0){
                     collision_dx /= collisionVector;
                     collision_dy /= collisionVector;
-                        // Modification de la vitesse des sphères pour qu'elles se déplacent dans la direction opposée
+                    
+                    // Modification de la vitesse des sphères pour qu'elles se déplacent dans la direction opposée
                     float pushPower = 2.0f;
                 
                     spheres[i].speed.x = collision_dx * pushPower;
@@ -71,8 +73,14 @@ void speciesCollisions() {
                     spheres[i].position.x += 0.01f * (rand() % 100 - 50);
                     spheres[i].position.y += 0.01f * (rand() % 100 - 50);
                 }
-                if(spheres_counter < MAX_SPHERES){
+
+                if ((currentTime - spheres[i].collisionTime > COLLISION_DELAY) &&
+                    (currentTime - spheres[j].collisionTime > COLLISION_DELAY) &&
+                    (spheres_counter < MAX_SPHERES)) {
                     addSpecie((t_color) SPPONGEPAT_SPHERE_COLOR);
+                    // Mise à jour du temps de la dernière collision
+                    spheres[i].collisionTime = currentTime;
+                    spheres[j].collisionTime = currentTime;
                 }
                 
             }
@@ -100,6 +108,8 @@ void addSpecie(t_color couleur){
     s->radius = DEFAULT_SPHERE_RADIUS;
 
     s->previousSpeed = s->speed;
+
+    s->collisionTime = COLLISION_DELAY;
     
     spheres_counter+=1;
     printf("NB SPHERE = %d\n",spheres_counter);
@@ -139,7 +149,6 @@ void drawSpecies(){
         t_sphere *s = &spheres[i];
     
         draw_sphere(s->position, DEFAULT_SPHERE_RADIUS, s->colour);
-        printf("Je dessine la sphère n°%d et sa position est x = %f y = %f z = %f\n",i,s->position.x,s->position.y,s->position.z);
-    
+        // printf("Je dessine la sphère n°%d et sa position est x = %f y = %f z = %f\n",i,s->position.x,s->position.y,s->position.z);
     }
 }
