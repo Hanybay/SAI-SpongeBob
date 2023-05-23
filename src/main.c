@@ -25,6 +25,7 @@ float window_width = DEFAULT_WINDOW_WIDTH,   // Largeur de la fenêtre
 float aspect;
 float delta_time = 0;
 int last_time = 0;
+int frames_counter = 0;
 
 
 // Affiche la notice d'utilisation
@@ -112,6 +113,13 @@ void update() {
     // Espèces
     updateSpherePosition();
 
+    frames_counter+=1;
+    if(frames_counter >=2){
+       speciesCollisions();
+       frames_counter=0; 
+    }
+    
+
     glutPostRedisplay();
 }
 
@@ -169,7 +177,7 @@ void keyboard(unsigned char key, int x, int y) {
             shoot_bullet(camera_position, camera_target, 0.1);
             break;
         case 'w': // Crée une espèce
-            addSpecie();
+            addSpecie((t_color)DEFAULT_SPHERE_COLOR);
             break;
     }
 
