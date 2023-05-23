@@ -23,6 +23,7 @@ typedef struct {
     t_point position;
     t_point start;
     t_point end;
+    float radius;
     float speed;
     int steps;
 } t_bullet;
@@ -30,7 +31,7 @@ typedef struct {
 
 // Prototypes des fonctions
 // Tire une balle (rajoute une balle dans le monde)
-void shoot_bullet(t_point start, t_vector end, float speed);
+void shoot_bullet(t_point start, t_point end, float speed);
 // Met à jour les positions des balles
 void update_bullets_positions();
 // Dessine les balles

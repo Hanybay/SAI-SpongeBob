@@ -9,6 +9,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <math.h>
+#include <time.h>
 
 // Constantes
 #define DEFAULT_FOV 45.0f
@@ -25,17 +26,19 @@ typedef struct {
     float x, y, z;
 } t_point;
 
+// // // Initialise le point avec les coordonnées données
 #define INIT_POINT(p, _x, _y, _z) do { \
     (p).x = (_x); \
     (p).y = (_y); \
     (p).z = (_z); \
 } while (0)
 
+// // // Affiche les coordonnées du point
 #define PRINT_POINT(p) do { \
     printf("(x = %f, y = %f, z = %f)\n", (p).x, (p).y, (p).z); \
 } while (0)
 
-// // Type représentant un vecteur
+// // Type représentant un vecteur (<=> t_point)
 typedef t_point t_vector;
 
 // // Type représentant une couleur
@@ -43,10 +46,19 @@ typedef struct {
     float r, g, b;
 } t_color;
 
+// // // Initialise la couleur avec le code rgb donné
 #define INIT_COLOR(c, _r, _g, _b) do { \
     (c).r = (_r); \
     (c).g = (_g); \
     (c).b = (_b); \
 } while (0)
+
+// // Type représentant un AABB parallélépipède
+// // rectangle dont tous les côtés sont parallèles avec les axes
+typedef struct {
+    float min_x, max_x;
+    float min_y, max_y;
+    float min_z, max_z;
+} t_AABB;
 
 #endif

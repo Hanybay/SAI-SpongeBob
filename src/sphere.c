@@ -138,8 +138,12 @@ void drawSpecies(){
     for (int i = 0; i<spheres_counter; i++) {
         t_sphere *s = &spheres[i];
     
+<<<<<<< HEAD
         drawSphere(s->position, DEFAULT_SPHERE_RADIUS, s->colour);
         printf("Je dessine la sphère n°%d et sa position est x = %f y = %f z = %f\n",i,s->position.x,s->position.y,s->position.z);
         
+=======
+        draw_sphere(s->position, DEFAULT_SPHERE_RADIUS, (t_color)DEFAULT_SPHERE_COLOR);
+>>>>>>> dev
     }
 }

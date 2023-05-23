@@ -1,24 +1,34 @@
 /* 
-* Module : view
+* Module : observer
 * Type : fichier en-tête
 * Auteur : Mourtaza AKIL
 * Date de création : 16/05/2023
 */
 
-#ifndef _VIEW_H_
-#define _VIEW_H_
+#ifndef _OBSERVER_H_
+#define _OBSERVER_H_
 
 #include "types.h"
-#include "transformations.h"
+#include "transformation.h"
 
 // Constantes
 #define DEFAULT_FORWARD_MOVE { 0, 0, DEFAULT_MOVE_STEP }
 #define DEFAULT_BACK_MOVE { 0, 0, -DEFAULT_MOVE_STEP }
 #define DEFAULT_RIGHT_MOVE { -DEFAULT_MOVE_STEP, 0, 0 }
 #define DEFAULT_LEFT_MOVE { DEFAULT_MOVE_STEP, 0, 0 }
+#define DEFAULT_OBSERVER_RADIUS 0.3f
+
+// Types
+// Observateur
+typedef struct {
+    t_point position;
+    float radius;
+} t_observer;
 
 
 // Prototypes des fonctions
+// Initialise l'observateur
+void init_observer(t_point position);
 // Déplace l'observateur vers l'avant
 void move_forward();
 // Déplace l'observateur vers l'arrière

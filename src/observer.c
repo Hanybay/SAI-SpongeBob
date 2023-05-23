@@ -1,16 +1,15 @@
 /* 
-* Module : view
+* Module : observer
 * Type : fichier source
 * Auteur : Mourtaza AKIL
 * Date de création : 16/05/2023
 */
 
-#include "view.h"
-#include <stdio.h>
-#include <math.h>
-#include <GL/glu.h>
+#include "observer.h"
 
 // Variables globales
+// // Observateur
+t_observer observer;
 // // Déplacements de l'observateur
 t_vector forward = DEFAULT_FORWARD_MOVE,
          back = DEFAULT_BACK_MOVE,
@@ -19,25 +18,34 @@ t_vector forward = DEFAULT_FORWARD_MOVE,
 extern t_point camera_position;
 extern t_point camera_target;
 
+// Initialise l'observateur
+void init_observer(t_point position) {
+    observer.position = position;
+    observer.radius = DEFAULT_OBSERVER_RADIUS;
+}
 
 // Déplace l'observateur vers l'avant
 void move_forward() {
     camera_position = translate_point(camera_position, forward);
+    observer.position = camera_position;
 }
 
 // Déplace l'observateur vers l'arrière
 void move_back() {
     camera_position = translate_point(camera_position, back);
+    observer.position = camera_position;
 }
 
 // Déplace l'observateur vers la gauche
 void move_left() {
     camera_position = translate_point(camera_position, left);
+    observer.position = camera_position;
 }
 
 // Déplace l'observateur vers la droite
 void move_right() {
     camera_position = translate_point(camera_position, right);
+    observer.position = camera_position;
 }
 
 // Applique une rotation aux vecteurs de déplacement
@@ -46,8 +54,7 @@ void rotate_movement_vectors(float vertical_angle, float horizontal_angle) {
                    default_left = DEFAULT_LEFT_MOVE;
     float horizontal_angle_radians;
 
-    // Conversion des angles en radian
-    printf("\n-----------\nangle = %f\n\n", horizontal_angle);
+    // Conversion des angles en radians
     horizontal_angle_radians = -horizontal_angle * (M_PI  / 360);
 
     // Rotation par rapport à l'angle horizontal (autour de l'axe y)
@@ -62,8 +69,6 @@ void rotate_movement_vectors(float vertical_angle, float horizontal_angle) {
     right.x = -left.x;
     right.y = -left.y;
     right.z = -left.z;
-
-    PRINT_POINT(forward);
 }
 
 // Met à jour la caméra
