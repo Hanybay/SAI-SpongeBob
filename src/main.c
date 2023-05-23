@@ -137,7 +137,7 @@ void update() {
     updateSpherePosition();
 
     frames_counter+=1;
-    if(frames_counter >=2){
+    if(frames_counter >=10){
        speciesCollisions();
        frames_counter=0; 
     }
@@ -209,7 +209,7 @@ void keyboard(unsigned char key, int x, int y) {
             shoot_bullet(camera_position, camera_target, 0.1);
             break;
         case 'w': // Crée une espèce
-            addSpecie((t_color)DEFAULT_SPHERE_COLOR);
+            addSpecie((t_color)DEFAULT_SPHERE_COLOR,0);
             break;
     }
 }

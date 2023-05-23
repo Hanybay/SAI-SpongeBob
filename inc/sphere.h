@@ -39,7 +39,7 @@ int isSphereCollided(t_sphere s1, t_sphere s2);
 // Fonction qui vérifie les collisions des sphères 2 à 2
 void speciesCollisions();
 // Rajoute une nouvelle espèce dans le monde
-void addSpecie(t_color couleur);
+void addSpecie(t_color couleur, int choix);
 // Avance l'espèce vers l'avant
 void moveSpecie(t_sphere *s);
 // Mets à jour la position de la sphere

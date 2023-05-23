@@ -8,10 +8,14 @@
 #include <math.h>
 #include "drawing.h"
 #include "sphere.h"
+#include "random.h"
 
 // Variables globales
 t_sphere spheres[MAX_SPHERES];
 int spheres_counter = 0;
+extern t_point platform_min_corner;
+extern t_point platform_max_corner;
+
 
 
 int isSphereCollided(t_sphere s1, t_sphere s2) {
@@ -77,7 +81,7 @@ void speciesCollisions() {
                 if ((currentTime - spheres[i].collisionTime > COLLISION_DELAY) &&
                     (currentTime - spheres[j].collisionTime > COLLISION_DELAY) &&
                     (spheres_counter < MAX_SPHERES)) {
-                    addSpecie((t_color) SPPONGEPAT_SPHERE_COLOR);
+                    addSpecie((t_color) SPPONGEPAT_SPHERE_COLOR,1);
                     // Mise à jour du temps de la dernière collision
                     spheres[i].collisionTime = currentTime;
                     spheres[j].collisionTime = currentTime;
@@ -91,7 +95,7 @@ void speciesCollisions() {
 
 
 
-void addSpecie(t_color couleur){
+void addSpecie(t_color couleur,int choix){
     if(spheres_counter >= MAX_SPHERES){
         fprintf(stderr,"Numéro maximum d'éspèces atteint\n");
         return;
@@ -99,9 +103,16 @@ void addSpecie(t_color couleur){
     t_sphere * s = &spheres[spheres_counter];
     
     // On crée l'espèce à l'origine (pour l'instant)
-    s->position = (t_point) {0, 0, 0};
+
+    if(choix == 0){
+        s->position = (t_point) {0, 0, 0};
+    }
+    else{
+        s->position = random_point(platform_min_corner,platform_max_corner);
+        s->position.y = 0;
+    }
     
-    s->speed = (t_point) {1, 0, 0};
+    s->speed = (t_point) {1, 0, 1};
     
     s->colour = couleur;
 
@@ -119,7 +130,7 @@ void addSpecie(t_color couleur){
 void moveSpecie(t_sphere *s){
     s->position.x += s->speed.x / 100;
     s->position.y += s->speed.y;
-    s->position.z += s->speed.z;
+    s->position.z += s->speed.z / 100;
 
 
     if (s->speed.x > s->previousSpeed.x) {
