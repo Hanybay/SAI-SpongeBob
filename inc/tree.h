@@ -27,6 +27,7 @@
 typedef struct {
     t_point position;
     float radius;
+    t_color color;
 } t_foliage;
 
 // // Arbre

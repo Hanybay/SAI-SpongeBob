@@ -6,7 +6,7 @@
 */
 
 #include "types.h"
-#include "view.h"
+#include "observer.h"
 #include "drawing.h"
 #include "bullet.h"
 #include "object.h"
@@ -254,6 +254,7 @@ int main(int argc, char **argv) {
     // Initialisations du monde
     generate_random_houses(10, platform_min_corner, platform_max_corner);
     generate_random_trees(50, platform_min_corner, platform_max_corner);
+    init_observer(camera_position);
 
     glutMainLoop();
     

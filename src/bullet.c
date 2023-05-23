@@ -32,6 +32,9 @@ void shoot_bullet(t_point start, t_point end, float speed) {
 
     // Nombre de pas
     bullet->steps = 0;
+
+    // Rayon
+    bullet->radius = DEFAULT_BULLET_RADIUS;
 }
 
 // Fais avancer la balle
@@ -73,6 +76,6 @@ void draw_bullets() {
     for (int i = 0; i < bullets_count; i++) {
         t_bullet *bullet = &bullets[i];
     
-        draw_sphere(bullet->position, DEFAULT_BULLET_RADIUS, bullet_color);
+        draw_sphere(bullet->position, bullet->radius, bullet_color);
     }
 }

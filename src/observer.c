@@ -1,16 +1,15 @@
 /* 
-* Module : view
+* Module : observer
 * Type : fichier source
 * Auteur : Mourtaza AKIL
 * Date de création : 16/05/2023
 */
 
-#include "view.h"
-#include <stdio.h>
-#include <math.h>
-#include <GL/glu.h>
+#include "observer.h"
 
 // Variables globales
+// // Observateur
+t_observer observer;
 // // Déplacements de l'observateur
 t_vector forward = DEFAULT_FORWARD_MOVE,
          back = DEFAULT_BACK_MOVE,
@@ -19,25 +18,34 @@ t_vector forward = DEFAULT_FORWARD_MOVE,
 extern t_point camera_position;
 extern t_point camera_target;
 
+// Initialise l'observateur
+void init_observer(t_point position) {
+    observer.position = position;
+    observer.radius = DEFAULT_OBSERVER_RADIUS;
+}
 
 // Déplace l'observateur vers l'avant
 void move_forward() {
     camera_position = translate_point(camera_position, forward);
+    observer.position = camera_position;
 }
 
 // Déplace l'observateur vers l'arrière
 void move_back() {
     camera_position = translate_point(camera_position, back);
+    observer.position = camera_position;
 }
 
 // Déplace l'observateur vers la gauche
 void move_left() {
     camera_position = translate_point(camera_position, left);
+    observer.position = camera_position;
 }
 
 // Déplace l'observateur vers la droite
 void move_right() {
     camera_position = translate_point(camera_position, right);
+    observer.position = camera_position;
 }
 
 // Applique une rotation aux vecteurs de déplacement

@@ -38,9 +38,7 @@ typedef struct {
     printf("(x = %f, y = %f, z = %f)\n", (p).x, (p).y, (p).z); \
 } while (0)
 
-// // // Affiche les coordonnées du point
-
-// // Type représentant un vecteur
+// // Type représentant un vecteur (<=> t_point)
 typedef t_point t_vector;
 
 // // Type représentant une couleur
@@ -48,6 +46,7 @@ typedef struct {
     float r, g, b;
 } t_color;
 
+// // // Initialise la couleur avec le code rgb donné
 #define INIT_COLOR(c, _r, _g, _b) do { \
     (c).r = (_r); \
     (c).g = (_g); \

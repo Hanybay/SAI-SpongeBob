@@ -1,5 +1,5 @@
 /* 
-* Module : transformations
+* Module : transformation
 * Type : fichier source
 * Auteur : Mourtaza AKIL
 * Date de création : 29/03/2023
@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "transformations.h"
+#include "transformation.h"
 
 // Variables globales
 int transformation_matrix_dimensions[2] = { 4, 4 };

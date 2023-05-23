@@ -5,12 +5,9 @@
 * Date de création : 18/05 / 2023
 */
 
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <math.h>
+#include "transformation.h"
 #include "drawing.h"
-#include "transformations.h"
+
 
 // Dessine un plus en 2D à la position donnée (position.z inutile)
 void draw_plus_2D(t_point position, float size, t_color color, float line_width) {
@@ -111,7 +108,7 @@ void draw_house_door(int is_open, t_point corner1, t_point corner2, t_color colo
 
 // Dessine la face avant d'une maison (porte + fenêtre)
 void draw_house_front(t_point corner1, t_point corner2, 
-    t_color wall_color, t_color door_color, t_color window_color) {
+    t_color wall_color, t_color door_color, t_color window_color, int door_is_open) {
     float wall_width, wall_height, door_width, door_height, window_radius;
     t_point door_corner1, door_corner2, window_corner1, window_corner2;
 
@@ -126,7 +123,7 @@ void draw_house_front(t_point corner1, t_point corner2,
 
     INIT_POINT(door_corner1, corner1.x + wall_width * 0.15, corner1.y, corner1.z);
     INIT_POINT(door_corner2, door_corner1.x + door_width, door_corner1.y + door_height, corner1.z);
-    draw_house_door(1, door_corner1, door_corner2, door_color);
+    draw_house_door(door_is_open, door_corner1, door_corner2, door_color);
 
     // Fenêtre
     // // Dimensions de la fenêtre
@@ -174,7 +171,7 @@ void draw_house_front(t_point corner1, t_point corner2,
 }
 
 // Dessine un cube avec des trous (corps d'une maison)
-void draw_house_cube(t_point corner1, t_point corner2, t_color color, t_color door_color, t_color window_color) {
+void draw_house_cube(t_point corner1, t_point corner2, t_color color, t_color door_color, t_color window_color, int door_is_open) {
     // Autres faces du cube
     glColor3f(color.r, color.g, color.b);
 
@@ -199,7 +196,7 @@ void draw_house_cube(t_point corner1, t_point corner2, t_color color, t_color do
     glEnd();
 
     // Face avant
-    draw_house_front(corner1, corner2, color, door_color, window_color);
+    draw_house_front(corner1, corner2, color, door_color, window_color, door_is_open);
 }
 
 // Dessine une sphère

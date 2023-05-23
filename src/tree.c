@@ -62,6 +62,13 @@ int add_tree(t_point position) {
 void generate_foliage(t_tree *tree) {
     float top_foliage_y = 0;
 
+    // Couleurs
+    t_color foliage_colors[5] = {
+        { 0 / 255.0f, 135 / 255.0f, 62 / 255.0f },
+        { 0 / 255.0f, 177 / 255.0f, 64 / 255.0f },
+        { 0 / 255.0f, 154 / 255.0f, 23 / 255.0f }
+    };
+
     // Draw the foliage
     for (int i = 0; i < tree->foliage_count; i++) {
         // Offsets aléatoires pour le feuillage
@@ -74,6 +81,9 @@ void generate_foliage(t_tree *tree) {
 
         // Taille aléatoire
         tree->foliage[i].radius = random_float(MIN_FOLIAGE_RADIUS, MAX_FOLIAGE_RADIUS);
+
+        // Couleur du feuillage
+        tree->foliage[i].color = foliage_colors[random_int(0, 2)];
 
         // Sommet de l'arbre
         if (tree->foliage[i].position.y > top_foliage_y)
@@ -88,8 +98,6 @@ void generate_foliage(t_tree *tree) {
 void draw_tree(t_tree tree) {
     static t_color trunk_color = {
         59.0f / 255, 52.0f / 255, 41.0f / 255
-    }, foliage_color = {
-        119.0f / 255, 163.0f / 255, 122.0f / 255
     };
 
     // Tronc
@@ -97,7 +105,7 @@ void draw_tree(t_tree tree) {
 
     // Feuillage
     for (int i = 0; i < tree.foliage_count; i++)
-        draw_sphere(tree.foliage[i].position, tree.foliage[i].radius, foliage_color);
+        draw_sphere(tree.foliage[i].position, tree.foliage[i].radius, tree.foliage[i].color);
 }
 
 // Dessine tous les arbres

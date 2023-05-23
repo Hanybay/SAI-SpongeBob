@@ -8,7 +8,6 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
-#include <stdarg.h>
 #include "types.h"
 
 // Types

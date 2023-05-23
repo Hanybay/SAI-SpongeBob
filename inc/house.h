@@ -1,12 +1,12 @@
 /* 
-* Module : houses
+* Module : house
 * Type : fichier en-tête
 * Auteur : Mourtaza AKIL
 * Date de création : 21/05/2023
 */
 
-#ifndef _HOUSES_H_
-#define _HOUSES_H_
+#ifndef _HOUSE_H_
+#define _HOUSE_H_
 
 #include "types.h"
 
@@ -19,11 +19,19 @@
 
 // Types
 
+// // Porte
+typedef struct {
+    t_point min_corner, max_corner;
+    float width, height;
+    int is_open;
+} t_door;
+
 // // Maison
 typedef struct {
     t_point position;
     float width, depth;
     float body_height, roof_height;
+    t_door door;
     t_color body_color, roof_color, window_color, door_color;
 } t_house;
 

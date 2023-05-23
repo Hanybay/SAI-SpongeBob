@@ -25,7 +25,7 @@ void draw_line(t_point corner1, t_point corner2, t_color color, float line_width
 // Dessine un cube
 void draw_cube(t_point corner1, t_point corner2, t_color color);
 // Dessine un cube avec des trous (corps d'une maison)
-void draw_house_cube(t_point corner1, t_point corner2, t_color color, t_color door_color, t_color window_color);
+void draw_house_cube(t_point corner1, t_point corner2, t_color color, t_color door_color, t_color window_color, int door_is_open);
 // Dessine une sphère (ATTENTION ! Dessin à l'origine)
 void draw_sphere(t_point position, float radius, t_color color);
 // Dessine un cône tronqué

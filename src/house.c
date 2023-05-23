@@ -30,6 +30,7 @@ int check_house(t_house house) {
 // Ajoute une maison
 int add_house(t_point position) {
     t_house house;
+    t_point body_min_corner;
 
     // Nombre de maisons max
     if (houses_count > MAX_HOUSES) return 1;
@@ -40,6 +41,19 @@ int add_house(t_point position) {
     house.depth = DEFAULT_HOUSE_DEPTH;
     house.body_height = DEFAULT_HOUSE_BODY_HEIGHT;
     house.roof_height = DEFAULT_HOUSE_ROOF_HEIGHT;
+    
+    // // Porte
+    house.door.is_open = 0;
+    house.door.width = DEFAULT_HOUSE_WIDTH * 0.25f;
+    house.door.height = DEFAULT_HOUSE_WIDTH * 0.8f;
+
+    // // // Extrémités de la maison
+    INIT_POINT(body_min_corner, house.position.x - house.width / 2, house.position.y, house.position.z - house.depth / 2);
+    
+    // // // Extrémités de la porte
+    INIT_POINT(house.door.min_corner, body_min_corner.x + DEFAULT_HOUSE_WIDTH * 0.15, body_min_corner.y, body_min_corner.z);
+    INIT_POINT(house.door.max_corner, house.door.min_corner.x + house.door.width, house.door.min_corner.y + house.door.height, body_min_corner.z);
+    
     // // Couleurs
     INIT_COLOR(house.body_color, 132 / 255.0f, 46 / 255.0f, 27 / 255.0f);
     INIT_COLOR(house.roof_color, 80 / 255.0f, 80 / 255.0f, 80 / 255.0f);
@@ -66,7 +80,7 @@ void draw_house(t_house house) {
     };
 
     // Corps de la maison
-    draw_house_cube(body_corner1, body_corner2, house.body_color, house.door_color, house.window_color);
+    draw_house_cube(body_corner1, body_corner2, house.body_color, house.door_color, house.window_color, house.door.is_open);
 
     // Dessiner le toit de la maison
     t_point roof_position = { house.position.x, house.position.y + house.body_height + house.roof_height / 2.0f, house.position.z };

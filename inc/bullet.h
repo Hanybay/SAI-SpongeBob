@@ -23,6 +23,7 @@ typedef struct {
     t_point position;
     t_point start;
     t_point end;
+    float radius;
     float speed;
     int steps;
 } t_bullet;

@@ -1,12 +1,12 @@
 /* 
-* Module : transformations
+* Module : transformation
 * Type : fichier en-tête
 * Auteur : Mourtaza AKIL
 * Date de création : 29/03/2023
 */
 
-#ifndef _TRANSFORMATIONS_H_
-#define _TRANSFORMATIONS_H_
+#ifndef _TRANSFORMATION_H_
+#define _TRANSFORMATION_H_
 
 #include "types.h"
 #include "matrix.h"
