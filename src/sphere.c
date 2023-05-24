@@ -10,7 +10,7 @@
 #include "drawing.h"
 #include "sphere.h"
 #include "random.h"
-#include "intersection.h"
+#include "interaction.h"
 
 // Variables globales
 t_sphere spheres[MAX_SPHERES];

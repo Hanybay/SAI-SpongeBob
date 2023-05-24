@@ -45,10 +45,23 @@ static const int update_delay = 1000 / 30;
 
 // Affiche la notice d'utilisation
 void help_notice() {
-    fprintf(stdout, "\n////////////////////////SPONGEBOB UNIVERSE///////////////////////\n\n"
-                    "\n\n"
+    fprintf(stdout, "\n////////////////////////////BALLALAND////////////////////////////\n\n"
+                    "\n- Les touches suivantes sont interactives :\n"
                     "\n-----------------------------------------------------------------\n\n"
-                    "\n\n"
+                    "    '[GAUCHE]'     :    déplace l'observateur vers la gauche.\n"
+                    "    '[DROITE]'     :    déplace l'observateur vers la droite.\n"
+                    "    '[AVANT]'      :    avance l'observateur.\n"
+                    "    '[ARRIERE]'    :    recule l'observateur.\n\n"
+
+                    "    '[Q]'          :    déplace la caméra vers la gauche.\n"
+                    "    '[D]'          :    déplace la caméra vers la droite.\n"
+                    "    '[S]'          :    déplace la caméra vers le bas.\n"
+                    "    '[Z]'          :    déplace la caméra vers le haut.\n\n"
+
+                    "    '[B]'          :    permet de tirer une balle.\n"
+                    "    '[W]'          :    permet de créer une boule vivante.\n"
+                    "    '[A]'          :    permet d'ouvrir une porte qui se trouve \n"
+                    "                        à proximité.\n\n"
                     "\n-----------------------------------------------------------------\n\n");
 }
 

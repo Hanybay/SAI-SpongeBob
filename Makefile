@@ -27,7 +27,7 @@ INC = -I$(HED_DIR)
 
 ## Exécutables
 
-EXEC = spongeBob-universe
+EXEC = ballaland
 
 
 # Fonctions
