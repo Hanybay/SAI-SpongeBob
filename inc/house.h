@@ -9,6 +9,8 @@
 #define _HOUSE_H_
 
 #include "types.h"
+#include "house.h"
+#include "observer.h"
 
 // Constantes
 #define MAX_HOUSES 10
@@ -47,5 +49,14 @@ void draw_house(t_house house);
 void draw_houses();
 // Génère aléatoirement des maisons dans la zone située entre min et max
 void generate_random_houses(int count, t_point min, t_point max);
+// Teste les collisions entre l'observateur et la maison
+int check_observer_collision_house(t_observer observer, t_house house);
+// Teste les collisions entre l'observateur et toutes les maisons
+int check_observer_collision_houses(t_observer observer);
+// Ouvre ou ferme la porte de la maison
+void open_close_door(int house_number);
+// Teste les collisions entre l'observateur et toutes les portes
+// Retourne le numéro de la maison concernée en cas de succès
+int check_observer_collision_doors(t_observer observer);
 
 #endif

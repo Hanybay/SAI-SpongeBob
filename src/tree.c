@@ -7,7 +7,7 @@
 
 #include "drawing.h"
 #include "house.h"
-#include "intersection.h"
+#include "interaction.h"
 #include "random.h"
 #include "tree.h"
 
@@ -118,4 +118,15 @@ void draw_trees() {
 void generate_random_trees(int count, t_point min, t_point max) {
     for (int i = 0; i < count && i < MAX_TREES; i++)
         while (!add_tree(random_point(min, max)));
+}
+
+// Teste les collisions entre l'observateur et tous les arbres
+int check_observer_collision_trees(t_observer observer) {
+    for (int i = 0; i < trees_count; i++) {
+        if (is_observer_tree_colliding(observer, trees[i]))
+            // Collision
+            return 1;
+    }
+
+    return 0;
 }

@@ -6,6 +6,7 @@
 */
 
 #include <math.h>
+#include "interaction.h"
 #include "drawing.h"
 #include "sphere.h"
 #include "random.h"
@@ -183,4 +184,15 @@ t_color combineColours(t_color c1, t_color c2) {
     res.b = fmax(fmin(res.b, 1.0f), 0.0f);
 
     return res;
+}
+
+// Teste les collisions entre l'observateur et tous les êtres vivants
+int check_observer_collision_beings(t_observer observer) {
+    for (int i = 0; i < spheres_counter; i++) {
+        if (is_observer_being_colliding(observer, spheres[i]))
+            // Collision
+            return 1;
+    }
+
+    return 0;
 }

@@ -5,6 +5,9 @@
 * Date de création : 16/05/2023
 */
 
+#include "tree.h"
+#include "house.h"
+#include "sphere.h"
 #include "observer.h"
 
 // Variables globales
@@ -24,27 +27,73 @@ void init_observer(t_point position) {
     observer.radius = DEFAULT_OBSERVER_RADIUS;
 }
 
+// Vérifie la position de l'observateur
+int check_observer_position(t_observer observer) {
+    // Maisons
+    if (check_observer_collision_houses(observer)) return 1;
+
+    // Arbres
+    if (check_observer_collision_trees(observer)) return 1;
+
+    // Êtres vivants (sphères)
+    if (check_observer_collision_beings(observer)) return 1;
+
+    return 0;
+} 
+
 // Déplace l'observateur vers l'avant
 void move_forward() {
-    camera_position = translate_point(camera_position, forward);
+    t_point tmp_camera_position = translate_point(camera_position, forward);
+    t_observer tmp_observer = {
+        tmp_camera_position, DEFAULT_OBSERVER_RADIUS
+    };
+
+    // Vérifications
+    if (check_observer_position(tmp_observer)) return;
+
+    camera_position = tmp_camera_position;
     observer.position = camera_position;
 }
 
 // Déplace l'observateur vers l'arrière
 void move_back() {
-    camera_position = translate_point(camera_position, back);
+    t_point tmp_camera_position = translate_point(camera_position, back);
+    t_observer tmp_observer = {
+        tmp_camera_position, DEFAULT_OBSERVER_RADIUS
+    };
+    
+    // Vérifications
+    if (check_observer_position(tmp_observer)) return;
+
+    camera_position = tmp_camera_position;
     observer.position = camera_position;
 }
 
 // Déplace l'observateur vers la gauche
 void move_left() {
-    camera_position = translate_point(camera_position, left);
+    t_point tmp_camera_position = translate_point(camera_position, left);
+    t_observer tmp_observer = {
+        tmp_camera_position, DEFAULT_OBSERVER_RADIUS
+    };
+    
+    // Vérifications
+    if (check_observer_position(tmp_observer)) return;
+
+    camera_position = tmp_camera_position;
     observer.position = camera_position;
 }
 
 // Déplace l'observateur vers la droite
 void move_right() {
-    camera_position = translate_point(camera_position, right);
+    t_point tmp_camera_position = translate_point(camera_position, right);
+    t_observer tmp_observer = {
+        tmp_camera_position, DEFAULT_OBSERVER_RADIUS
+    };
+    
+    // Vérifications
+    if (check_observer_position(tmp_observer)) return;
+
+    camera_position = tmp_camera_position;
     observer.position = camera_position;
 }
 
@@ -83,4 +132,14 @@ void update_camera(float camera_horizontal_angle, float camera_vertical_angle, f
               camera_target.x, camera_target.y, camera_target.z,
               // Direction "vers le haut" de la caméra
               0.0f, 1.0f, 0.0f);
+}
+
+// Ouvre une porte si l'observateur est près d'une porte
+void try_open_close_door() {
+    // Cherche une porte
+    int house_number = check_observer_collision_doors(observer);
+
+    // Ouverture / Fermeture de la porte de la maison
+    if (house_number != -1)
+        open_close_door(house_number);
 }

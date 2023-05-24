@@ -1,11 +1,11 @@
 /* 
-* Module : intersection
+* Module : interaction
 * Type : fichier source
 * Auteur : Mourtaza AKIL
 * Date de création : 21/05/2023
 */
 
-#include "intersection.h"
+#include "interaction.h"
 
 // Vérifie si les deux AABB s'intersectent
 int is_colliding(t_AABB box1, t_AABB box2) {
@@ -16,6 +16,27 @@ int is_colliding(t_AABB box1, t_AABB box2) {
 
     // Si aucune des conditions ci-dessus n'est vraie, alors il y a une intersection
     return 1;
+}
+
+// Vérifie si le point est dans l'AABB
+int is_inside(t_point point, t_AABB box) {
+    if (point.x >= box.min_x && point.x <= box.max_x &&
+        point.y >= box.min_y && point.y <= box.max_y &&
+        point.z >= box.min_z && point.z <= box.max_z) {
+        return 1; // Le point est à l'intérieur de l'AABB
+    }
+
+    return 0;
+}
+
+// Réduit l'AABB du nombre de pixels
+void shrink_AABB(t_AABB *box, float pixels) {
+    box->min_x += pixels;
+    box->max_x -= pixels;
+    box->min_y += pixels;
+    box->max_y -= pixels;
+    box->min_z += pixels;
+    box->max_z -= pixels;
 }
 
 // Génère l'AABB de la maison
@@ -176,4 +197,49 @@ int is_observer_door_colliding(t_observer observer, t_door door) {
            door_AABB = generate_door_AABB(door);
 
     return is_colliding(being_AABB, door_AABB);
+}
+
+// Vérifie si l'être vivant est dans la maison
+int is_being_inside_house(t_sphere being, t_house house) {
+    t_AABB house_AABB = generate_house_AABB(house);
+
+    return is_inside(being.position, house_AABB);
+}
+
+// Vérifie si l'observateur est dans la maison
+int is_observer_inside_house(t_observer observer, t_house house) {
+    t_AABB house_AABB = generate_house_AABB(house);
+
+    // On réduit la taille de l'AABB pour ne pas faire de superposition
+    shrink_AABB(&house_AABB, 0.2f);
+
+    return is_inside(observer.position, house_AABB);
+}
+
+// Vérifie si l'observateur est prêt de la porte
+int is_observer_near_door(t_observer observer, t_door door) {
+    // Centre de la porte
+    t_point door_center = {
+        (door.max_corner.x - door.min_corner.x) / 2 + door.min_corner.x,
+        (door.max_corner.y - door.min_corner.y) / 2 + door.min_corner.y,
+        (door.max_corner.z - door.min_corner.z) / 2 + door.min_corner.z,
+    };
+
+    // Distance entre le centre de la porte et l'observateur
+    float distance = sqrt(pow(door_center.x - observer.position.x, 2)
+        + pow(door_center.y - observer.position.y, 2)
+        + pow(door_center.z - observer.position.z, 2));
+
+    return distance < observer.radius + 1.0f;
+}
+
+// Vérifie si l'observateur peut passer à travers la porte
+int can_observer_pass_door(t_observer observer, t_door door) {
+    if (((observer.position.x >= door.min_corner.x && observer.position.x <= door.max_corner.x)
+        || (observer.position.z >= door.min_corner.z && observer.position.z <= door.max_corner.z))
+        && observer.position.y >= door.min_corner.y && observer.position.y <= door.max_corner.y) {
+        return 1; // Passage
+    }
+
+    return 0;
 }

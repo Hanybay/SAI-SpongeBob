@@ -5,10 +5,9 @@
 * Date de création : 21/05/2023
 */
 
-#include "intersection.h"
 #include "drawing.h"
 #include "random.h"
-#include "house.h"
+#include "interaction.h"
   
 // Variables globales
 // // Maisons
@@ -97,4 +96,53 @@ void draw_houses() {
 void generate_random_houses(int count, t_point min, t_point max) {
     for (int i = 0; i < count && i < MAX_HOUSES; i++)
         while (!add_house(random_point(min, max)));
+}
+
+// Teste les collisions entre l'observateur et la maison
+int check_observer_collision_house(t_observer observer, t_house house) {
+    // S'il n'y a pas de collision
+    if (!is_observer_house_colliding(observer, house))
+        return 0;
+
+    // S'il y a un passage à travers la porte
+    if (house.door.is_open && is_observer_near_door(observer, house.door)
+        && can_observer_pass_door(observer, house.door))
+        return 0;
+    
+    // Si l'observateur n'est pas TOTALEMENT dans la maison
+    if (is_observer_inside_house(observer, house))
+        return 0;
+
+    return 1;
+}
+
+// Teste les collisions entre l'observateur et toutes les maisons
+int check_observer_collision_houses(t_observer observer) {
+    for (int i = 0; i < houses_count; i++) {
+        if (check_observer_collision_house(observer, houses[i]))
+            // Collision
+            return 1;
+    }
+
+    return 0;
+}
+
+// Ouvre ou ferme la porte de la maison
+void open_close_door(int house_number) {
+    // Vérification
+    if (house_number < 0 || house_number >= MAX_HOUSES) return;
+
+    // Ouverture / fermeture
+    houses[house_number].door.is_open = !houses[house_number].door.is_open;
+}
+
+// Teste la proximité de l'observateur avec toutes les portes
+int check_observer_collision_doors(t_observer observer) {
+    for (int i = 0; i < houses_count; i++) {
+        if (is_observer_near_door(observer, houses[i].door))
+            // Proximité avec la porte
+            return i;
+    }
+
+    return -1;
 }

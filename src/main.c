@@ -93,7 +93,7 @@ void display() {
     draw_skybox(camera_position, 50.0f);
 
     // Plateforme
-    glColor3f(1.0f, 1.0f, 1.0f);  // Couleur de la plateforme
+    glColor3f(194 / 255.0f, 178 / 255.0f, 128 / 255.0f);  // Couleur de la plateforme
     glBegin(GL_QUADS);
         glVertex3f(platform_min_corner.x, platform_min_corner.y, platform_min_corner.z); // Coin inférieur gauche
         glVertex3f(platform_max_corner.x, platform_min_corner.y, platform_min_corner.z); // Coin inférieur droit
@@ -208,6 +208,9 @@ void keyboard(unsigned char key, int x, int y) {
              addSpecie((onclickChoice == 1 ? (t_color) SPONGEBOB_SPHERE_COLOR : (t_color)PATRICK_SPHERE_COLOR), 0);
              onclickChoice = (onclickChoice == 1) ? 0 : 1;
              printf("COULEUR VAL = %d\n",onclickChoice);
+            break;
+        case 'a':
+            try_open_close_door();
             break;
     }
 }

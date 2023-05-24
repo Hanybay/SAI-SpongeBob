@@ -8,6 +8,7 @@
 #ifndef _SPHERE_H_
 #define _SPHERE_H_
 
+#include "observer.h"
 #include "types.h"
 
 // Constantes
@@ -48,5 +49,7 @@ void updateSpherePosition();
 void drawSpecies();
 // Mélange deux couleurs passées en paramètre
 t_color combineColours(t_color c1, t_color c2);
+// Teste les collisions entre l'observateur et tous les êtres vivants
+int check_observer_collision_beings(t_observer observer);
 
 #endif

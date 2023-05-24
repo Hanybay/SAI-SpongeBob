@@ -8,6 +8,7 @@
 #ifndef _TREE_H_
 #define _TREE_H_
 
+#include "observer.h"
 #include "types.h"
 
 // Constantes
@@ -54,5 +55,7 @@ void draw_tree(t_tree tree);
 void draw_trees();
 // Génère aléatoirement des arbres dans la zone située entre min et max
 void generate_random_trees(int count, t_point min, t_point max);
+// Teste les collisions entre l'observateur et tous les arbres
+int check_observer_collision_trees(t_observer observer);
 
 #endif

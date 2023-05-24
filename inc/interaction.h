@@ -1,12 +1,12 @@
 /* 
-* Module : intersection
+* Module : interaction
 * Type : fichier en-tête
 * Auteur : Mourtaza AKIL
 * Date de création : 21/05/2023
 */
 
-#ifndef _INTERSECTION_H_
-#define _INTERSECTION_H_
+#ifndef _INTERACTION_H_
+#define _INTERACTION_H_
 
 #include "types.h"
 #include "house.h"
@@ -19,6 +19,10 @@
 // Prototypes des fonctions
 // Vérifie si les deux AABB s'intersectent
 int is_colliding(t_AABB box1, t_AABB box2);
+// Vérifie si le point est dans l'AABB
+int is_inside(t_point point, t_AABB box);
+// Réduit l'AABB du nombre de pixels
+void shrink_AABB(t_AABB *box, float pixels);
 // Génère l'AABB de la maison
 t_AABB generate_house_AABB(t_house house);
 // Génère l'AABB de l'arbre
@@ -49,5 +53,13 @@ int is_observer_tree_colliding(t_observer observer, t_tree tree);
 int is_observer_being_colliding(t_observer observer, t_sphere being);
 // Vérifie si l'observateur et la porte s'intersectent
 int is_observer_door_colliding(t_observer observer, t_door door);
+// Vérifie si l'être vivant est dans la maison
+int is_being_inside_house(t_sphere being, t_house house);
+// Vérifie si l'observateur est dans la maison
+int is_observer_inside_house(t_observer observer, t_house house);
+// Vérifie si l'observateur est prêt de la porte
+int is_observer_near_door(t_observer observer, t_door door);
+// Vérifie si l'observateur peut passer à travers la porte
+int can_observer_pass_door(t_observer observer, t_door door);
 
 #endif
