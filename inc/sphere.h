@@ -48,5 +48,6 @@ void updateSpherePosition();
 void drawSpecies();
 // Mélange deux couleurs passées en paramètre
 t_color combineColours(t_color c1, t_color c2);
-
+// Permet de faire le choix entre la collision d'une maison ou avec une autre espèce
+void collisionType(int i, int j, int choix);
 #endif
