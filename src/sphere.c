@@ -47,7 +47,10 @@ int isSphereCollided(t_sphere s1, t_sphere s2) {
 void speciesCollisions() { 
     int currentTime = glutGet(GLUT_ELAPSED_TIME);
     for (int i = 0; i < spheres_counter; i++) {
-        for (int j = i + 1; j < spheres_counter; j++) {
+        for (int j = 0; j < spheres_counter; j++) {
+
+            if (j == i) continue;
+
             float dx = spheres[i].position.x - spheres[j].position.x;
             float dy = spheres[i].position.y - spheres[j].position.y;
             float distance = sqrt(dx * dx + dy * dy);
@@ -106,11 +109,11 @@ void addSpecie(t_color couleur,int choix){
     // On crée l'espèce à l'origine (pour l'instant)
 
     if(choix == 0){
-        s->position = (t_point) {0, 0, 0};
+        s->position = (t_point) {0, 0.5f, 0};
     }
     else{
         s->position = random_point(platform_min_corner,platform_max_corner);
-        s->position.y = 0;
+        s->position.y = 0.5f;
     }
     
     s->speed = (t_point) {1, 0, 1};
@@ -129,9 +132,9 @@ void addSpecie(t_color couleur,int choix){
 
 
 void moveSpecie(t_sphere *s){
-    s->position.x += s->speed.x / random_int(100,500);
+    s->position.x += s->speed.x / 100;
     s->position.y += s->speed.y;
-    s->position.z += s->speed.z / random_int(100,500);
+    s->position.z += s->speed.z / 100;
 
 
     if (s->speed.x > s->previousSpeed.x) {

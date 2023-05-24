@@ -131,19 +131,7 @@ void display() {
 
 // Réalise les calculs
 void update() {
-    // Balles
-    update_bullets_positions();
 
-    // Espèces
-    updateSpherePosition();
-
-    frames_counter+=1;
-    if(frames_counter >=10){
-       speciesCollisions();
-       frames_counter=0; 
-    }
-    
-    glutPostRedisplay();
     // Horloge actuelle en millisecondes
     clock_t current_clock = clock() * 1000 / CLOCKS_PER_SEC;
 
@@ -151,6 +139,13 @@ void update() {
     if (current_clock - previous_clock >= update_delay) {
         // Mise à jour de l'horloge précédente
         previous_clock = current_clock;
+
+        // Balles
+        update_bullets_positions();
+
+        // Espèces
+        updateSpherePosition();
+        speciesCollisions();
 
         glutPostRedisplay();
     }
