@@ -10,13 +10,15 @@
 #include "drawing.h"
 #include "sphere.h"
 #include "random.h"
+#include "intersection.h"
 
 // Variables globales
 t_sphere spheres[MAX_SPHERES];
 int spheres_counter = 0;
 extern t_point platform_min_corner;
 extern t_point platform_max_corner;
-
+extern t_house houses[MAX_HOUSES];
+extern int houses_count;
 
 
 int isSphereCollided(t_sphere s1, t_sphere s2) {
@@ -46,52 +48,20 @@ int isSphereCollided(t_sphere s1, t_sphere s2) {
 
 
 void speciesCollisions() { 
-    int currentTime = glutGet(GLUT_ELAPSED_TIME);
     for (int i = 0; i < spheres_counter; i++) {
         for (int j = 0; j < spheres_counter; j++) {
-
             if (j == i) continue;
-
             float dx = spheres[i].position.x - spheres[j].position.x;
             float dy = spheres[i].position.y - spheres[j].position.y;
             float distance = sqrt(dx * dx + dy * dy);
 
             if (distance < (spheres[i].radius + spheres[j].radius)) {
-                // Calcule du vecteur directeur de la collision
-                float collision_dx = spheres[i].position.x - spheres[j].position.x;
-                float collision_dy = spheres[i].position.y - spheres[j].position.y;
-
-
-                // Normalisation du vecteur directeur (le rendre de longueur 1)
-                float collisionVector = sqrt(collision_dx * collision_dx + collision_dy * collision_dy);
-                if(collisionVector != 0){
-                    collision_dx /= collisionVector;
-                    collision_dy /= collisionVector;
-                    
-                    // Modification de la vitesse des sphères pour qu'elles se déplacent dans la direction opposée
-                    float pushPower = 2.0f;
-                
-                    spheres[i].speed.x = collision_dx * pushPower;
-                    //spheres[i].speed.y = collision_dy * pushPower;
-                    spheres[j].speed.x = -collision_dx * pushPower;
-                    //spheres[j].speed.y = -collision_dy * pushPower;
-
-                }
-                else{
-                    spheres[i].position.x += 0.01f * (rand() % 100 - 50);
-                    spheres[i].position.y += 0.01f * (rand() % 100 - 50);
-                }
-
-                if ((currentTime - spheres[i].collisionTime > COLLISION_DELAY) &&
-                    (currentTime - spheres[j].collisionTime > COLLISION_DELAY) &&
-                    (spheres_counter < MAX_SPHERES)) {
-                        t_color mix = combineColours(spheres[i].colour,spheres[j].colour);
-                        addSpecie(mix,1);
-                    // Mise à jour du temps de la dernière collision
-                        spheres[i].collisionTime = currentTime;
-                        spheres[j].collisionTime = currentTime;
-                }
-                
+                collisionType(i, j, 1);
+            }
+        }
+        for(int k=0; k < houses_count;k++){
+            if(is_being_house_colliding(spheres[i], houses[k])){
+                collisionType(i,k,0);
             }
         }
     }
@@ -114,7 +84,7 @@ void addSpecie(t_color couleur,int choix){
     }
     else{
         s->position = random_point(platform_min_corner,platform_max_corner);
-        s->position.y = 0.5f;
+        s->position.z = 0.5f;
     }
     
     s->speed = (t_point) {1, 0, 1};
@@ -184,6 +154,54 @@ t_color combineColours(t_color c1, t_color c2) {
     res.b = fmax(fmin(res.b, 1.0f), 0.0f);
 
     return res;
+}
+
+void collisionType(int i, int j, int choix){
+
+    int currentTime = glutGet(GLUT_ELAPSED_TIME);
+    float collision_dx, collision_dz, collisionVector;
+    if (choix == 1){
+        collision_dx = spheres[i].position.x - spheres[j].position.x;
+        collision_dz = spheres[i].position.z - spheres[j].position.z;
+    }
+    else{
+        collision_dx = spheres[i].position.x - houses[j].position.x;
+        collision_dz = spheres[i].position.z - houses[j].position.z;
+    }
+    // Calcule du vecteur directeur de la collision
+    collisionVector = sqrt(collision_dx * collision_dx + collision_dz * collision_dz);
+    if (collisionVector != 0){
+        collision_dx /= collisionVector;
+        collision_dz /= collisionVector;
+
+        // Modification de la vitesse des sphères pour qu'elles se déplacent dans la direction opposée
+        float pushPower = 2.0f;
+
+        spheres[i].speed.x = collision_dx * pushPower;
+        spheres[i].speed.z = collision_dz * pushPower;
+        if (choix == 1){
+            spheres[j].speed.x = -collision_dx * pushPower;
+            spheres[j].speed.z = -collision_dz * pushPower;
+        }
+    }
+    // Dans le cas où les balles se trouvent au même endroit
+    // On donne fait une petite répulsion
+    else{
+        spheres[i].position.x += 0.01f * (rand() % 100 - 50);
+        spheres[i].position.z += 0.01f * (rand() % 100 - 50);
+    }
+    if (choix == 1){
+        // Pour pas remplir le tableau d'espèces directement lors du chevauchement
+        if ((currentTime - spheres[i].collisionTime > COLLISION_DELAY) &&
+            (currentTime - spheres[j].collisionTime > COLLISION_DELAY) &&
+            (spheres_counter < MAX_SPHERES)){
+                t_color mix = combineColours(spheres[i].colour, spheres[j].colour);
+                addSpecie(mix, 1);
+                // Mise à jour du temps de la dernière collision
+                spheres[i].collisionTime = currentTime;
+                spheres[j].collisionTime = currentTime;
+            }
+    }
 }
 
 // Teste les collisions entre l'observateur et tous les êtres vivants
