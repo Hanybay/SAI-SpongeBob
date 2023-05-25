@@ -27,22 +27,7 @@ void killSpecie(int index) {
     spheres[index].status = 0;
     // Ajouter l'indice à la pile des indices libres
     spheresStack[++stackIndex] = index;
-}
-
-void addSpecieIndex(t_color colour, float radius) {
-    if (spheres_counter < MAX_SPHERES) {
-        int index;
-        // Si la pile n'est pas vide,on utilise un indice libre
-        if (stackIndex != -1) {
-            index = spheresStack[stackIndex--];
-        } else {
-            // Sinon, on ajoute le sphère à la fin du tableau
-            index = spheres_counter++;
-        }
-        // Ajouter la nouvelle espèce à l'indice trouvé
-        spheres[index].colour = colour;
-        spheres[index].radius = radius;
-        spheres[index].status = 1;
-    }
+    spheres_counter-=1;
+    printf("depuis pile.c, spheresCounter = %d\n",spheres_counter);
 }
 

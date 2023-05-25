@@ -24,6 +24,8 @@ extern int houses_count;
 extern int bullets_count;
 extern t_bullet bullets[MAX_BULLETS];
 extern t_observer observer;
+extern int spheresStack[MAX_SPHERES];
+extern int stackIndex;
 
 int isSphereCollided(t_sphere s1, t_sphere s2) {
     float dx = s1.position.x - s2.position.x;
@@ -80,7 +82,7 @@ void speciesCollisions(){
     }
 }
 
-void addSpecie(t_color couleur,int choix){
+/*void addSpecie(t_color couleur,int choix){
     if(spheres_counter >= MAX_SPHERES){
         fprintf(stderr,"Numéro maximum d'éspèces atteint\n");
         return;
@@ -110,6 +112,48 @@ void addSpecie(t_color couleur,int choix){
     s->status = 1;
     
     spheres_counter+=1;
+    printf("NB SPHERE = %d\n",spheres_counter);
+}*/
+
+
+
+void addSpecie(t_color couleur, int choix){
+    if(spheres_counter >= MAX_SPHERES){
+        fprintf(stderr,"Numéro maximum d'éspèces atteint\n");
+        return;
+    }
+    int index;
+    // Si la pile n'est pas vide,on utilise un indice libre
+    if (stackIndex != -1) {
+        index = spheresStack[stackIndex--];
+    } else {
+        // Sinon, on ajoute le sphère à la fin du tableau
+        index = spheres_counter++;
+    }
+
+    t_sphere * s = &spheres[index];
+    
+    // On crée l'espèce à l'origine (pour l'instant)
+    if(choix == 0){
+        s->position = (t_point) {0, 0.5f, 0};
+    }
+    else{
+        s->position = random_point(platform_min_corner, platform_max_corner);
+        s->position.y = 0.5f;
+    }
+    
+    s->speed = (t_point) {1, 0, 1};
+    
+    s->colour = couleur;
+
+    s->radius = DEFAULT_SPHERE_RADIUS;
+
+    s->previousSpeed = s->speed;
+
+    s->collisionTime = COLLISION_DELAY;
+
+    s->status = 1;
+
     printf("NB SPHERE = %d\n",spheres_counter);
 }
 
