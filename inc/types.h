@@ -14,8 +14,8 @@
 // Constantes
 #define DEFAULT_FOV 45.0f
 #define DEFAULT_CLIP_FRONT 0.1f
-#define DEFAULT_CLIP_BACK 100.0f
-#define DEFAULT_CAMERA_SPEED 3.0f
+#define DEFAULT_CLIP_BACK 200.0f
+#define DEFAULT_CAMERA_SPEED 3.6f
 #define DEFAULT_MOVE_STEP 0.1f
 #define DEFAULT_WINDOW_WIDTH 800
 #define DEFAULT_WINDOW_HEIGHT 600
@@ -36,6 +36,13 @@ typedef struct {
 // // // Affiche les coordonnées du point
 #define PRINT_POINT(p) do { \
     printf("(x = %f, y = %f, z = %f)\n", (p).x, (p).y, (p).z); \
+} while (0)
+
+// // // Translate le point par le vecteur
+#define  TRANSLATE_POINT(p, _v) do { \
+    (p).x += (_v).x; \
+    (p).y += (_v).y; \
+    (p).z += (_v).z; \
 } while (0)
 
 // // Type représentant un vecteur (<=> t_point)

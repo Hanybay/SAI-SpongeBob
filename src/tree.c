@@ -69,7 +69,7 @@ void generate_foliage(t_tree *tree) {
         { 0 / 255.0f, 154 / 255.0f, 23 / 255.0f }
     };
 
-    // Draw the foliage
+    // Génère le feuillage
     for (int i = 0; i < tree->foliage_count; i++) {
         // Offsets aléatoires pour le feuillage
         float offsetX = random_float(-0.5, 0.5);

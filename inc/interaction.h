@@ -14,6 +14,7 @@
 #include "sphere.h"
 #include "bullet.h"
 #include "observer.h"
+#include "cloud.h"
 
 
 // Prototypes des fonctions
@@ -53,6 +54,8 @@ int is_observer_tree_colliding(t_observer observer, t_tree tree);
 int is_observer_being_colliding(t_observer observer, t_sphere being);
 // Vérifie si l'observateur et la porte s'intersectent
 int is_observer_door_colliding(t_observer observer, t_door door);
+// Vérifie si les nuages s'intersectent
+int is_clouds_colliding(t_cloud cloud1, t_cloud cloud2);
 // Vérifie si l'être vivant est dans la maison
 int is_being_inside_house(t_sphere being, t_house house);
 // Vérifie si l'observateur est dans la maison
@@ -61,5 +64,7 @@ int is_observer_inside_house(t_observer observer, t_house house);
 int is_observer_near_door(t_observer observer, t_door door);
 // Vérifie si l'observateur peut passer à travers la porte
 int can_observer_pass_door(t_observer observer, t_door door);
+// Vérifie si le nuage est à l'intérieur de la scène
+int is_cloud_inside(t_cloud cloud);
 
 #endif

@@ -7,6 +7,11 @@
 
 #include "interaction.h"
 
+// Variables globales
+extern t_point platform_min_corner;
+extern t_point platform_max_corner;
+
+
 // Vérifie si les deux AABB s'intersectent
 int is_colliding(t_AABB box1, t_AABB box2) {
     // Si l'un des coins de la boîte 1 est à l'extérieur de la boîte 2
@@ -37,6 +42,20 @@ void shrink_AABB(t_AABB *box, float pixels) {
     box->max_y -= pixels;
     box->min_z += pixels;
     box->max_z -= pixels;
+}
+
+// Génère l'AABB avec les deux extrémités données
+t_AABB generate_AABB(t_point min_corner, t_point max_corner) {
+    t_AABB aabb;
+
+    aabb.min_x = min_corner.x;
+    aabb.max_x = max_corner.x;
+    aabb.min_y = min_corner.y;
+    aabb.max_y = max_corner.y;
+    aabb.min_z = min_corner.z;
+    aabb.max_z = max_corner.z;
+
+    return aabb;
 }
 
 // Génère l'AABB de la maison
@@ -206,6 +225,19 @@ int is_being_inside_house(t_sphere being, t_house house) {
     return is_inside(being.position, house_AABB);
 }
 
+// Vérifie si les nuages s'intersectent
+int is_clouds_colliding(t_cloud cloud1, t_cloud cloud2) {
+    t_sphere sphere1, sphere2;
+
+    // On convertit les nuages en sphères pour utiliser leurs méthodes
+    sphere1.position = cloud1.position;
+    sphere1.radius = 20.0f;
+    sphere2.position = cloud2.position;
+    sphere2.radius = 20.0f;
+
+    return isSphereCollided(sphere1, sphere2);
+}
+
 // Vérifie si l'observateur est dans la maison
 int is_observer_inside_house(t_observer observer, t_house house) {
     t_AABB house_AABB = generate_house_AABB(house);
@@ -242,4 +274,55 @@ int can_observer_pass_door(t_observer observer, t_door door) {
     }
 
     return 0;
+}
+
+// Vérifie si le nuage est à l'intérieur de la scène
+int is_cloud_inside(t_cloud cloud) {
+    t_point tmp_platform_min_corner = {
+        platform_min_corner.x - 30.0f,
+        cloud.position.y,
+        platform_min_corner.z - 30.0f
+    }, tmp_platform_max_corner = {
+        platform_max_corner.x + 30.0f,
+        cloud.position.y,
+        platform_max_corner.z + 30.0f
+    };
+
+    t_AABB platform_aabb = generate_AABB(tmp_platform_min_corner, tmp_platform_max_corner);
+
+    return is_inside(cloud.position, platform_aabb);
+}
+
+// Vérifie si l'observateur est à l'intérieur de la scène
+int is_observer_inside(t_observer observer) {
+    t_point tmp_platform_min_corner = {
+        platform_min_corner.x - observer.radius,
+        observer.position.y,
+        platform_min_corner.z - observer.radius
+    }, tmp_platform_max_corner = {
+        platform_max_corner.x + observer.radius,
+        observer.position.y,
+        platform_max_corner.z + observer.radius
+    };
+
+    t_AABB platform_aabb = generate_AABB(tmp_platform_min_corner, tmp_platform_max_corner);
+
+    return is_inside(observer.position, platform_aabb);
+}
+
+// Vérifie si l'être vivant est à l'intérieur de la scène
+int is_being_inside(t_sphere being) {
+    t_point tmp_platform_min_corner = {
+        platform_min_corner.x - being.radius,
+        being.position.y,
+        platform_min_corner.z - being.radius
+    }, tmp_platform_max_corner = {
+        platform_max_corner.x + being.radius,
+        being.position.y,
+        platform_max_corner.z + being.radius
+    };
+
+    t_AABB platform_aabb = generate_AABB(tmp_platform_min_corner, tmp_platform_max_corner);
+
+    return is_inside(being.position, platform_aabb);
 }
