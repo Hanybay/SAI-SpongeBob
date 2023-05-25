@@ -159,6 +159,7 @@ void update() {
         // Espèces
         updateSpherePosition();
         speciesCollisions();
+        attractBeings(update_delay);
 
         glutPostRedisplay();
     }

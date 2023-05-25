@@ -41,6 +41,20 @@ typedef struct {
 // // Type représentant un vecteur (<=> t_point)
 typedef t_point t_vector;
 
+// // // Soustrait le vecteur par un autre vecteur
+#define SUBTRACT_VECTOR(result, vec1, vec2) do { \
+    (result).x = (vec1).x - (vec2).x; \
+    (result).y = (vec1).y - (vec2).y; \
+    (result).z = (vec1).z - (vec2).z; \
+} while (0)
+
+// // // Ajoute un vecteur au vecteur
+#define ADD_VECTOR(result, vec1, vec2) do { \
+    (result).x = (vec1).x + (vec2).x; \
+    (result).y = (vec1).y + (vec2).y; \
+    (result).z = (vec1).z + (vec2).z; \
+} while (0)
+
 // // Type représentant une couleur
 typedef struct {
     float r, g, b;

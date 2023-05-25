@@ -59,7 +59,7 @@ void speciesCollisions() {
                 collisionType(i, j, 1);
             }
         }
-        for(int k=0; k < houses_count;k++){
+        for(int k = 0; k < houses_count; k++){
             if(is_being_house_colliding(spheres[i], houses[k])){
                 collisionType(i,k,0);
             }
@@ -83,8 +83,8 @@ void addSpecie(t_color couleur,int choix){
         s->position = (t_point) {0, 0.5f, 0};
     }
     else{
-        s->position = random_point(platform_min_corner,platform_max_corner);
-        s->position.z = 0.5f;
+        s->position = random_point(platform_min_corner, platform_max_corner);
+        s->position.y = 0.5f;
     }
     
     s->speed = (t_point) {1, 0, 1};
@@ -160,6 +160,7 @@ void collisionType(int i, int j, int choix){
 
     int currentTime = glutGet(GLUT_ELAPSED_TIME);
     float collision_dx, collision_dz, collisionVector;
+
     if (choix == 1){
         collision_dx = spheres[i].position.x - spheres[j].position.x;
         collision_dz = spheres[i].position.z - spheres[j].position.z;
@@ -168,6 +169,7 @@ void collisionType(int i, int j, int choix){
         collision_dx = spheres[i].position.x - houses[j].position.x;
         collision_dz = spheres[i].position.z - houses[j].position.z;
     }
+
     // Calcule du vecteur directeur de la collision
     collisionVector = sqrt(collision_dx * collision_dx + collision_dz * collision_dz);
     if (collisionVector != 0){
@@ -184,6 +186,7 @@ void collisionType(int i, int j, int choix){
             spheres[j].speed.z = -collision_dz * pushPower;
         }
     }
+
     // Dans le cas où les balles se trouvent au même endroit
     // On donne fait une petite répulsion
     else{
@@ -213,4 +216,42 @@ int check_observer_collision_beings(t_observer observer) {
     }
 
     return 0;
+}
+
+// Attire les êtres vivants les un vers les autres
+void attractBeings(float deltaTime) {
+    for (int i = 0; i < spheres_counter; i++) {
+        for (int j = 0; j < spheres_counter; j++) {
+            t_vector direction, acceleration, acceleration_scaled;
+            float distance, force;
+
+            if (i == j) continue;
+
+            // Direction
+            SUBTRACT_VECTOR(direction, spheres[j].position, spheres[i].position);
+
+            // Distance entre les deux êtres
+            distance = sqrtf(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+
+            // Force d'attraction
+            force = (GRAVITATIONAL_CONSTANT * DEFAULT_BEING_MASS * DEFAULT_BEING_MASS) / (distance * distance);
+
+            // Accélération
+            acceleration = (t_vector) {
+                direction.x * force / DEFAULT_BEING_MASS,
+                direction.y * force / DEFAULT_BEING_MASS,
+                direction.z * force / DEFAULT_BEING_MASS
+            };
+
+            acceleration_scaled = (t_vector) {
+                acceleration.x * deltaTime,
+                acceleration.y * deltaTime,
+                acceleration.z * deltaTime,
+            };
+
+            // Vélocité
+            ADD_VECTOR(spheres[i].speed, spheres[i].speed, acceleration_scaled);
+            SUBTRACT_VECTOR(spheres[j].speed, spheres[j].speed, acceleration_scaled);
+        }
+    }
 }

@@ -20,6 +20,8 @@
 #define SPPONGEPAT_SPHERE_COLOR { 1.0f, 0.7863f, 0.3981f }
 #define DEFAULT_SPHERE_RADIUS 0.5
 #define COLLISION_DELAY 2000     // Temps écoulé entre chaque collision en millisecondes
+#define GRAVITATIONAL_CONSTANT 6.674e-11
+#define DEFAULT_BEING_MASS 100
 
 // Types
 
@@ -53,5 +55,7 @@ t_color combineColours(t_color c1, t_color c2);
 void collisionType(int i, int j, int choix);
 // Teste les collisions entre l'observateur et tous les êtres vivants
 int check_observer_collision_beings(t_observer observer);
+// Attire les êtres vivants les un vers les autres
+void attractBeings(float deltaTime);
 
 #endif
