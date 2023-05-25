@@ -11,6 +11,8 @@
 #include "sphere.h"
 #include "random.h"
 #include "interaction.h"
+#include "pile.h"
+
 
 // Variables globales
 t_sphere spheres[MAX_SPHERES];
@@ -19,6 +21,8 @@ extern t_point platform_min_corner;
 extern t_point platform_max_corner;
 extern t_house houses[MAX_HOUSES];
 extern int houses_count;
+extern int bullets_count;
+extern t_bullet bullets[MAX_BULLETS];
 
 
 int isSphereCollided(t_sphere s1, t_sphere s2) {
@@ -46,29 +50,31 @@ int isSphereCollided(t_sphere s1, t_sphere s2) {
     }
 }*/
 
-
-void speciesCollisions() { 
-    for (int i = 0; i < spheres_counter; i++) {
-        for (int j = 0; j < spheres_counter; j++) {
+void speciesCollisions(){
+    for (int i = 0; i < spheres_counter; i++){
+        for (int j = 0; j < spheres_counter; j++){
             if (j == i) continue;
             float dx = spheres[i].position.x - spheres[j].position.x;
             float dy = spheres[i].position.y - spheres[j].position.y;
             float distance = sqrt(dx * dx + dy * dy);
 
-            if (distance < (spheres[i].radius + spheres[j].radius)) {
+            if (distance < (spheres[i].radius + spheres[j].radius)){
                 collisionType(i, j, 1);
             }
         }
-        for(int k = 0; k < houses_count; k++){
-            if(is_being_house_colliding(spheres[i], houses[k])){
-                collisionType(i,k,0);
+        for (int k = 0; k < houses_count; k++){
+            if (is_being_house_colliding(spheres[i], houses[k])){
+                collisionType(i, k, 0);
+            }
+        }
+        for (int b = 0; b < bullets_count; b++){
+            if (BulletSphereCollision(bullets[b], spheres[i])){
+                //spheres[i].colour = (t_color)DEFAULT_SPHERE_COLOR;
+                collisionType(i,b,2);
             }
         }
     }
 }
-
-
-
 
 void addSpecie(t_color couleur,int choix){
     if(spheres_counter >= MAX_SPHERES){
@@ -96,6 +102,8 @@ void addSpecie(t_color couleur,int choix){
     s->previousSpeed = s->speed;
 
     s->collisionTime = COLLISION_DELAY;
+
+    s->status = 1;
     
     spheres_counter+=1;
     printf("NB SPHERE = %d\n",spheres_counter);
@@ -107,7 +115,8 @@ void moveSpecie(t_sphere *s){
     s->position.y += s->speed.y;
     s->position.z += s->speed.z / 100;
 
-
+    // Pour faire en sorte que la balle revienne à sa vitesse
+    // Initiale après collision
     if (s->speed.x > s->previousSpeed.x) {
         s->speed.x -= 0.001;
         if (s->speed.x < s->previousSpeed.x) {
@@ -125,7 +134,9 @@ void moveSpecie(t_sphere *s){
 
 void updateSpherePosition(){
     for(int i=0; i<spheres_counter;i++){
-        moveSpecie(&spheres[i]);
+        if(spheres[i].status == 1){
+            moveSpecie(&spheres[i]);
+        }    
     } 
 }
 
@@ -133,9 +144,9 @@ void drawSpecies(){
 
     for (int i = 0; i<spheres_counter; i++) {
         t_sphere *s = &spheres[i];
-    
-        draw_sphere(s->position, DEFAULT_SPHERE_RADIUS, s->colour);
-        // printf("Je dessine la sphère n°%d et sa position est x = %f y = %f z = %f\n",i,s->position.x,s->position.y,s->position.z);
+        if(s->status == 1){
+            draw_sphere(s->position, DEFAULT_SPHERE_RADIUS, s->colour);
+        }
     }
 }
 
@@ -165,9 +176,12 @@ void collisionType(int i, int j, int choix){
         collision_dx = spheres[i].position.x - spheres[j].position.x;
         collision_dz = spheres[i].position.z - spheres[j].position.z;
     }
-    else{
+    else if (choix == 0){
         collision_dx = spheres[i].position.x - houses[j].position.x;
         collision_dz = spheres[i].position.z - houses[j].position.z;
+    }
+    else{
+        killSpecie(i);
     }
 
     // Calcule du vecteur directeur de la collision
@@ -255,3 +269,20 @@ void attractBeings(float deltaTime) {
         }
     }
 }
+
+
+// Fonction qui retourne 1 si elles se chevauchent, 0 sinon
+
+int BulletSphereCollision(t_bullet bullet, t_sphere sphere) {
+    float dx = bullet.position.x - sphere.position.x;
+    float dy = bullet.position.y - sphere.position.y;
+    float dz = bullet.position.z - sphere.position.z;
+
+    // Calcul de la distance entre les deux centres
+    float distance = sqrt(dx * dx + dy * dy + dz * dz);
+
+    return distance < (bullet.radius + sphere.radius);
+}
+
+
+

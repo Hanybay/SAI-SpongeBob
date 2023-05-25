@@ -10,6 +10,7 @@
 
 #include "observer.h"
 #include "types.h"
+#include "bullet.h"
 
 // Constantes
 #define MAX_SPHERES 100
@@ -33,6 +34,7 @@ typedef struct {
     t_color colour;
     float radius;
     int collisionTime; 
+    int status;
 } t_sphere;
 
 
@@ -57,5 +59,7 @@ void collisionType(int i, int j, int choix);
 int check_observer_collision_beings(t_observer observer);
 // Attire les êtres vivants les un vers les autres
 void attractBeings(float deltaTime);
+// Verifie la collision entre une balle et une espèce
+int BulletSphereCollision(t_bullet bullet, t_sphere sphere);
 
 #endif
