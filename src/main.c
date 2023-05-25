@@ -13,6 +13,7 @@
 #include "house.h"
 #include "sphere.h"
 #include "tree.h"
+#include "cloud.h"
 
 // Variables globales
 float camera_horizontal_angle = 0.0f;        // Angle horizontal de la caméra en degrés
@@ -40,7 +41,7 @@ t_point platform_min_corner = {
 static clock_t previous_clock = 0;
 
 // Délai de mise à jour maximale en millisecondes
-static const int update_delay = 1000 / 30;
+static const int update_delay = 1000 / 60;
 
 
 // Affiche la notice d'utilisation
@@ -120,6 +121,9 @@ void display() {
     // Balles
     draw_bullets();
 
+    // Nuages
+    draw_clouds();
+
     // Arbres
     draw_trees();
 
@@ -152,6 +156,9 @@ void update() {
     if (current_clock - previous_clock >= update_delay) {
         // Mise à jour de l'horloge précédente
         previous_clock = current_clock;
+
+        // Nuages
+        update_clouds_positions();
 
         // Balles
         update_bullets_positions();
@@ -277,6 +284,7 @@ int main(int argc, char **argv) {
     // Initialisations du monde
     generate_random_houses(10, platform_min_corner, platform_max_corner);
     generate_random_trees(50, platform_min_corner, platform_max_corner);
+    generate_random_clouds(20, platform_min_corner, platform_max_corner);
     init_observer(camera_position);
 
     glutMainLoop();
