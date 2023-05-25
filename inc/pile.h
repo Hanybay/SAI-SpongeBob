@@ -14,8 +14,6 @@
 
 // Tue l'espèce à k'indice index
 void killSpecie(int index);
-//Ajoute 
-void addSpecieIndex(t_color colour, float radius);
 
 
 #endif

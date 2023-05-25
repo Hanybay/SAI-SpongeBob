@@ -66,5 +66,8 @@ int is_observer_near_door(t_observer observer, t_door door);
 int can_observer_pass_door(t_observer observer, t_door door);
 // Vérifie si le nuage est à l'intérieur de la scène
 int is_cloud_inside(t_cloud cloud);
-
+// Vérifie si l'observateur est à l'intérieur de la plateforme
+int is_observer_inside(t_observer observer);
+// Vérifie si l'espèce est à l'intérieur de la plateforme
+int is_being_inside(t_sphere being);
 #endif
