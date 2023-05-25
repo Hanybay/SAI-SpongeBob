@@ -11,7 +11,6 @@
 #include "sphere.h"
 #include "random.h"
 #include "interaction.h"
-#include "pile.h"
 #include "observer.h"
 
 // Variables globales
@@ -37,20 +36,6 @@ int isSphereCollided(t_sphere s1, t_sphere s2) {
 
     return distance <= radiusSum * radiusSum;
 }
-
-/*void speciesCollisions() {
-    for (int i = 0; i < spheres_counter; i++) {
-        for (int j = i + 1; j < spheres_counter; j++) {
-            float dx = spheres[i].position.x - spheres[j].position.x;
-            float dy = spheres[i].position.y - spheres[j].position.y;
-            float distance = sqrt(dx * dx + dy * dy);
-
-            if (distance < (spheres[i].radius + spheres[j].radius)) {
-                addSpecie((t_color) SPPONGEPAT_SPHERE_COLOR);
-            }
-        }
-    }
-}*/
 
 void speciesCollisions(){
     for (int i = 0; i < spheres_counter; i++){
@@ -114,48 +99,6 @@ void addSpecie(t_color couleur,int choix){
     spheres_counter+=1;
     printf("NB SPHERE = %d\n",spheres_counter);
 }
-
-
-
-/*void addSpecie(t_color couleur, int choix){
-    if(spheres_counter >= MAX_SPHERES){
-        fprintf(stderr,"Numéro maximum d'éspèces atteint\n");
-        return;
-    }
-    int index;
-    // Si la pile n'est pas vide,on utilise un indice libre
-    if (stackIndex != -1) {
-        index = spheresStack[stackIndex--];
-    } else {
-        // Sinon, on ajoute le sphère à la fin du tableau
-        index = spheres_counter++;
-    }
-
-    t_sphere * s = &spheres[index];
-    
-    // On crée l'espèce à l'origine (pour l'instant)
-    if(choix == 0){
-        s->position = (t_point) {0, 0.5f, 0};
-    }
-    else{
-        s->position = random_point(platform_min_corner, platform_max_corner);
-        s->position.y = 0.5f;
-    }
-    
-    s->speed = (t_point) {1, 0, 1};
-    
-    s->colour = couleur;
-
-    s->radius = DEFAULT_SPHERE_RADIUS;
-
-    s->previousSpeed = s->speed;
-
-    s->collisionTime = COLLISION_DELAY;
-
-    s->status = 1;
-
-    printf("NB SPHERE = %d\n",spheres_counter);
-}*/
 
 
 void moveSpecie(t_sphere *s){
