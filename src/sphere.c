@@ -46,23 +46,25 @@ void speciesCollisions(){
             float distance = sqrt(dx * dx + dy * dy);
 
             if (distance < (spheres[i].radius + spheres[j].radius)){
-                collisionType(i, j, 1);
+                collisionType(i, j, SPHERE_COLLISION);
             }
         }
         for (int k = 0; k < houses_count; k++){
             if (is_being_house_colliding(spheres[i], houses[k])){
-                collisionType(i, k, 0);
+                collisionType(i, k, HOUSE_COLLISION);
             }
         }
         for (int b = 0; b < bullets_count; b++){
             if (BulletSphereCollision(bullets[b], spheres[i])){
-                //spheres[i].colour = (t_color)DEFAULT_SPHERE_COLOR;
-                collisionType(i,b,2);
+                collisionType(i,b,BULLET_COLLISION);
             }
         }
         if(is_observer_being_colliding(observer,spheres[i])){
-            printf("je rentre dans la condition");
-            collisionType(i,0,3);
+            collisionType(i,0,OBSERVER_COLLISION);
+        }
+        if(!is_being_inside(spheres[i])){
+            collisionType(i,0,PLATFORM_COLLISION);
+            printf("ÇA MARCHE\n");
         }
     }
 }
@@ -97,14 +99,14 @@ void addSpecie(t_color couleur,int choix){
     s->status = 1;
     
     spheres_counter+=1;
-    printf("NB SPHERE = %d\n",spheres_counter);
+    // printf("NB SPHERE = %d\n",spheres_counter);
 }
 
 
 void moveSpecie(t_sphere *s){
-    s->position.x += s->speed.x / 100;
+    s->position.x += s->speed.x / SPEED_REGULATOR;
     s->position.y += s->speed.y;
-    s->position.z += s->speed.z / 100;
+    s->position.z += s->speed.z / SPEED_REGULATOR;
 
     // Pour faire en sorte que la balle revienne à sa vitesse
     // Initiale après collision
@@ -163,18 +165,18 @@ void collisionType(int i, int j, int choix){
     int currentTime = glutGet(GLUT_ELAPSED_TIME);
     float collision_dx, collision_dz, collisionVector;
 
-    if (choix == 1){
+    if (choix == SPHERE_COLLISION){
         collision_dx = spheres[i].position.x - spheres[j].position.x;
         collision_dz = spheres[i].position.z - spheres[j].position.z;
     }
-    else if (choix == 0){
+    else if (choix == HOUSE_COLLISION){
         collision_dx = spheres[i].position.x - houses[j].position.x;
         collision_dz = spheres[i].position.z - houses[j].position.z;
     }
-    else if(choix==2){
+    else if(choix == BULLET_COLLISION){
         killSpecie(i);
     }
-    else{
+    else if (choix == OBSERVER_COLLISION){
         float dx = spheres[i].position.x - observer.position.x;
         float dz = spheres[i].position.z - observer.position.z;
 
@@ -184,12 +186,14 @@ void collisionType(int i, int j, int choix){
             dx /= distance;
             dz /= distance;
         }
-        float pushDistance = 10;
+        float pushDistance = 0.8;
         spheres[i].position.x += dx * pushDistance;
         spheres[i].position.z += dz * pushDistance;
-        printf("je rentre, et ma position x vaut %f\n",spheres[i].position.x);
     }
-
+    // Dans le cas où la sphère touche la plateforme
+    else{
+        spheres[i].speed.x *= -1;
+    }
     // Calcule du vecteur directeur de la collision
     collisionVector = sqrt(collision_dx * collision_dx + collision_dz * collision_dz);
     if (collisionVector != 0){
@@ -201,7 +205,7 @@ void collisionType(int i, int j, int choix){
 
         spheres[i].speed.x = collision_dx * pushPower;
         spheres[i].speed.z = collision_dz * pushPower;
-        if (choix == 1){
+        if (choix == SPHERE_COLLISION){
             spheres[j].speed.x = -collision_dx * pushPower;
             spheres[j].speed.z = -collision_dz * pushPower;
         }
@@ -213,7 +217,7 @@ void collisionType(int i, int j, int choix){
         spheres[i].position.x += 0.01f * (rand() % 100 - 50);
         spheres[i].position.z += 0.01f * (rand() % 100 - 50);
     }
-    if (choix == 1){
+    if (choix == SPHERE_COLLISION){
         // Pour pas remplir le tableau d'espèces directement lors du chevauchement
         if ((currentTime - spheres[i].collisionTime > COLLISION_DELAY) &&
             (currentTime - spheres[j].collisionTime > COLLISION_DELAY) &&

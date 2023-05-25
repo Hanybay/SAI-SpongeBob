@@ -23,6 +23,12 @@
 #define COLLISION_DELAY 2000     // Temps écoulé entre chaque collision en millisecondes
 #define GRAVITATIONAL_CONSTANT 6.674e-11
 #define DEFAULT_BEING_MASS 100
+#define SPEED_REGULATOR 100 // On divise la vitesse par 100 pour ralentir le mouvement de la balle
+#define HOUSE_COLLISION 0
+#define SPHERE_COLLISION 1
+#define BULLET_COLLISION 2
+#define OBSERVER_COLLISION 3
+#define PLATFORM_COLLISION 4
 
 // Types
 
