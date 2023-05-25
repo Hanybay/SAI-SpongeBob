@@ -12,7 +12,7 @@
 #include "random.h"
 #include "interaction.h"
 #include "pile.h"
-
+#include "observer.h"
 
 // Variables globales
 t_sphere spheres[MAX_SPHERES];
@@ -23,7 +23,7 @@ extern t_house houses[MAX_HOUSES];
 extern int houses_count;
 extern int bullets_count;
 extern t_bullet bullets[MAX_BULLETS];
-
+extern t_observer observer;
 
 int isSphereCollided(t_sphere s1, t_sphere s2) {
     float dx = s1.position.x - s2.position.x;
@@ -72,6 +72,10 @@ void speciesCollisions(){
                 //spheres[i].colour = (t_color)DEFAULT_SPHERE_COLOR;
                 collisionType(i,b,2);
             }
+        }
+        if(is_observer_being_colliding(observer,spheres[i])){
+            printf("je rentre dans la condition");
+            collisionType(i,0,3);
         }
     }
 }
@@ -180,8 +184,23 @@ void collisionType(int i, int j, int choix){
         collision_dx = spheres[i].position.x - houses[j].position.x;
         collision_dz = spheres[i].position.z - houses[j].position.z;
     }
-    else{
+    else if(choix==2){
         killSpecie(i);
+    }
+    else{
+        float dx = spheres[i].position.x - observer.position.x;
+        float dz = spheres[i].position.z - observer.position.z;
+
+        // Normaliser ce vecteur (le rendre de longueur 1) pour obtenir la direction
+        float distance = sqrt(dx * dx + dz * dz);
+        if (distance != 0){
+            dx /= distance;
+            dz /= distance;
+        }
+        float pushDistance = 10;
+        spheres[i].position.x += dx * pushDistance;
+        spheres[i].position.z += dz * pushDistance;
+        printf("je rentre, et ma position x vaut %f\n",spheres[i].position.x);
     }
 
     // Calcule du vecteur directeur de la collision
@@ -220,6 +239,8 @@ void collisionType(int i, int j, int choix){
             }
     }
 }
+
+
 
 // Teste les collisions entre l'observateur et tous les êtres vivants
 int check_observer_collision_beings(t_observer observer) {

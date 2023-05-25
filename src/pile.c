@@ -32,11 +32,11 @@ void killSpecie(int index) {
 void addSpecieIndex(t_color colour, float radius) {
     if (spheres_counter < MAX_SPHERES) {
         int index;
-        // Si la pile n'est pas vide, utiliser un indice libre
+        // Si la pile n'est pas vide,on utilise un indice libre
         if (stackIndex != -1) {
             index = spheresStack[stackIndex--];
         } else {
-            // Sinon, ajouter à la fin du tableau
+            // Sinon, on ajoute le sphère à la fin du tableau
             index = spheres_counter++;
         }
         // Ajouter la nouvelle espèce à l'indice trouvé
