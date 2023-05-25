@@ -8,6 +8,7 @@
 #include "tree.h"
 #include "house.h"
 #include "sphere.h"
+#include "interaction.h"
 #include "observer.h"
 
 // Variables globales
@@ -29,14 +30,14 @@ void init_observer(t_point position) {
 
 // Vérifie la position de l'observateur
 int check_observer_position(t_observer observer) {
+    // hors-scène
+    if (!is_observer_inside(observer)) return 1;
+
     // Maisons
     if (check_observer_collision_houses(observer)) return 1;
 
     // Arbres
     if (check_observer_collision_trees(observer)) return 1;
-
-    // Êtres vivants (sphères)
-    if (check_observer_collision_beings(observer)) return 1;
 
     return 0;
 } 
