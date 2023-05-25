@@ -46,7 +46,7 @@ static const int update_delay = 1000 / 60;
 
 // Affiche la notice d'utilisation
 void help_notice() {
-    fprintf(stdout, "\n////////////////////////////BALLALAND////////////////////////////\n\n"
+    fprintf(stdout, "\n////////////////////////////BALLTOPIA////////////////////////////\n\n"
                     "\n- Les touches suivantes sont interactives :\n"
                     "\n-----------------------------------------------------------------\n\n"
                     "    '[GAUCHE]'     :    déplace l'observateur vers la gauche.\n"
@@ -267,7 +267,7 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_DOUBLE);
     glutInitWindowSize(window_width, window_height);
     glutInitWindowPosition(50, 50);
-    glutCreateWindow("SpongeBob Universe");
+    glutCreateWindow("Balltopia");
 
     // Fonctions gérant la fenêtre et ces événements
     glutDisplayFunc(display);
