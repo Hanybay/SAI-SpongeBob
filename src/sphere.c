@@ -82,7 +82,7 @@ void speciesCollisions(){
     }
 }
 
-/*void addSpecie(t_color couleur,int choix){
+void addSpecie(t_color couleur,int choix){
     if(spheres_counter >= MAX_SPHERES){
         fprintf(stderr,"Numéro maximum d'éspèces atteint\n");
         return;
@@ -113,11 +113,11 @@ void speciesCollisions(){
     
     spheres_counter+=1;
     printf("NB SPHERE = %d\n",spheres_counter);
-}*/
+}
 
 
 
-void addSpecie(t_color couleur, int choix){
+/*void addSpecie(t_color couleur, int choix){
     if(spheres_counter >= MAX_SPHERES){
         fprintf(stderr,"Numéro maximum d'éspèces atteint\n");
         return;
@@ -155,7 +155,7 @@ void addSpecie(t_color couleur, int choix){
     s->status = 1;
 
     printf("NB SPHERE = %d\n",spheres_counter);
-}
+}*/
 
 
 void moveSpecie(t_sphere *s){
@@ -348,6 +348,16 @@ int BulletSphereCollision(t_bullet bullet, t_sphere sphere) {
 
     return distance < (bullet.radius + sphere.radius);
 }
+
+
+void killSpecie(int index) {
+    for (int i = index; i < spheres_counter - 1; i++) {
+        spheres[i] = spheres[i + 1];
+    }
+    spheres_counter--;
+    printf("spheresCounter = %d\n",spheres_counter);
+}
+
 
 
 

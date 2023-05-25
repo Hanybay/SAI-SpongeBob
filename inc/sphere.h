@@ -61,5 +61,7 @@ int check_observer_collision_beings(t_observer observer);
 void attractBeings(float deltaTime);
 // Verifie la collision entre une balle et une espèce
 int BulletSphereCollision(t_bullet bullet, t_sphere sphere);
+// Tue une espèce
+void killSpecie(int index);
 
 #endif
